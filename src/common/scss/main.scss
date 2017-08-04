@@ -1,0 +1,14 @@
+@import "colors.scss";
+$login-bgcolor:$light-black !default;
+$header-bgcolor:$black !default;
+body {
+    font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+}
+
+.login-wrapper {
+    background-color: $login-bgcolor;
+}
+
+.header-wrapper {
+    background-color: $header-bgcolor;
+}

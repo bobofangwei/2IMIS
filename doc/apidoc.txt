@@ -1,0 +1,216 @@
+/*公共接口*/
+
+//1.地域接口
+/****公共接口*****/
+//请求方式：get
+//请求地址：xxxx
+//返回数据格式：
+{
+  "status":0,
+  "msg":"",
+  "res":{
+    "0":"北京",
+    "1":"上海"
+  }
+}
+
+//2.产品接口
+//请求方式：get
+//请求地址：xxxx
+//返回数据格式
+{
+  "status":0,
+  "msg":"",
+  "res":{
+    "0":"腾讯网卡",
+    "1":"蚂蚁宝卡"
+  }
+}
+
+//3.登录接口
+//请求方式：post
+//请求地址：xxxx
+//请求数据格式
+{"username":"xxxx","password":"xxxxx"}
+//返回数据格式
+//如果是合法用户，则返回
+{
+  "status":0,
+  "msg":"OK",
+  "res":{
+    "token":"xxxxxx"  //如果该用户名和密码存在，返回用户对应的token，否则token取值为0
+  }
+}
+//如果是非法用户，则返回
+{
+  "status":401,
+  "msg":"账户或密码错误",
+}
+
+//4.用户信息请求接口
+//请求方式：get
+//请求地址：xxxx?token="xxxxx" token为服务器端返回的token字符串
+//返回数据格式
+{
+  "status":0,
+  "msg":"OK",
+  "res":{
+    "username":"",//用户名
+    "avatar":"",//用户头像地址
+    "roles":[] //用户权限数组（一个用户可能有多种权限）
+  }
+}
+
+//4.用户注销接口
+//请求方式：post
+//请求地址：xxxx
+//请求数据格式
+{"token":"xxxxxx"}
+//返回数据格式
+{
+  "status":0,
+  "msg":"OK"
+}
+
+
+/******产品发展报表页面******/
+
+//1. 根据地域请求报表信息
+// 请求方式:post
+// 请求地址：xxxxx
+// 请求数据格式
+{"selectedProvince":"1"}//如果为0代表全国，其他为对应省分编码
+//返回数据格式：
+//{
+  "status":0,//接口状态字段
+  "msg":"",//出错信息字段，（接口返回有误时有值）
+  "res":[{
+    'product': '腾讯王卡',//产品名称
+    'yesterdayXinzeng': 110,//昨日新增
+    'monthXinzeng': 111111,//上月新增
+    'yesterdayTingji': 105,//昨日停机
+    'yesterdayQianfei': 101,//昨日欠费
+    'yesterdayXiaohu': 1000,//昨日销户
+    'yesterdayShouchong': 101,//昨日首充
+    'sumUser': 111111 //用户总数
+      }, {
+    'product': '蚂蚁宝卡',
+    'yesterdayXinzeng': 110,
+    'monthXinzeng': 111111,
+    'yesterdayTingji': 105,
+    'yesterdayQianfei': 101,
+    'yesterdayXiaohu': 1000,
+    'yesterdayShouchong': 101,
+    'sumUser': 111111
+  }]
+}
+
+/******产品发展报表页面******/
+
+//1. 根据产品类型请求报表信息
+// 请求方式:post
+// 请求地址：xxxxx
+// 请求数据格式
+{"selectedProduct":"1"}//如果为0代表所有产品合计，其他为对应产品编码
+//返回数据格式：
+{
+  "status":0,
+  "msg":"",
+  "res":[{
+    'province': '北京',//产品名称
+    'yesterdayXinzeng': 110,//昨日新增
+    'monthXinzeng': 111111,//上月新增
+    'yesterdayTingji': 105,//昨日停机
+    'yesterdayQianfei': 101,//昨日欠费
+    'yesterdayXiaohu': 1000,//昨日销户
+    'yesterdayShouchong': 101,//昨日首充
+    'sumUser': 111111 //用户总数
+      }, {
+    'product': '上海',
+    'yesterdayXinzeng': 110,
+    'monthXinzeng': 111111,
+    'yesterdayTingji': 105,
+    'yesterdayQianfei': 101,
+    'yesterdayXiaohu': 1000,
+    'yesterdayShouchong': 101,
+    'sumUser': 111111
+  }]
+}
+
+/******发展报表页面******/
+
+
+/****基本信息页面****/
+
+//1.页面初始化接口
+//请求方式get
+//请求地址:xxxxx
+//返回数据格式：
+{
+  "config":
+  {
+    "provinces":
+    {
+      0: "北京",
+      1: "上海"
+    },
+    "products":
+    {
+      0: "腾讯大王卡",
+      1: "蚂蚁宝卡"
+    },
+    "states":
+    {
+      0: "正常",
+      1: "全停",
+      2: "半停"
+    }
+  }
+}
+
+//2.查询接口
+//请求方式post(待定)
+//请求地址：xxxxx
+//请求数据格式：
+{
+  "sex": 1,//为""代表未选择，0代表男性，1代表女性
+  "minAge": 0,//最小年龄，如果为0代表未选择
+  "maxAge": 100,//最大年龄，如果为100代表未选择
+  "provinces": ["1"],//查询的归属地编码数组
+  "products": ["0", "1"],//查询的产品编码数组
+  "states": ["1", "0"],//查询的状态编码数组，0为，1为，2为
+  "minBalance": -9999,//最小余额，如果是-9999代表未选择此项
+  "maxBalance": 10000,//最大余额，如果是10000代表未选择此项
+  "daterange": ["2017-08-15T16:00:00.000Z", "2017-09-06T16:00:00.000Z"],//入网时间范围
+  "recharge": [0, 1] //充值情况，0代表首充，1代表次充
+}
+//返回数据格式：
+{
+  "products": [
+    {
+      "serial_number": "xxxxx",
+      "cust_name": "xxxx",
+      "contact_phone": "xxxx",
+      "sex": "xxxx",
+      "age": "xxxx",
+      "province_name": "xxxx",
+      "open_account_time": "xxxx",
+      "product_name": "xxxx",
+      "product_id": "xxxx",
+      "fee": "xxxx",
+      "state_name": "xxxx",
+      "leave_real_fee": "xxxx",
+      "leave_fee_time": "xxxx",
+      "credit_fee": "xxxx",
+      "pay_first_tag": "xxxx",
+      "pay_first_time": "xxxx",
+      "pay_first_fee": "xxxx",
+      "pay_second_tag": "xxxx",
+      "pay_second_time": "xxxx",
+      "pay_second_fee": "xxxx",
+      "update_time": "xxxx"
+    }
+
+  ],
+  "fileUrl": "xxxxx"
+}

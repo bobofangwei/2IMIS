@@ -1,0 +1,28 @@
+{
+    "products": [{
+            "serial_number": "xxxxx",
+            "cust_name": "xxxx",
+            "contact_phone": "xxxx",
+            "sex": "xxxx",
+            "age": "xxxx",
+            "province_name": "xxxx",
+            "open_account_time": "xxxx",
+            "product_name": "xxxx",
+            "product_id": "xxxx",
+            "fee": "xxxx",
+            "state_name": "xxxx",
+            "leave_real_fee": "xxxx",
+            "leave_fee_time": "xxxx",
+            "credit_fee": "xxxx",
+            "pay_first_tag": "xxxx",
+            "pay_first_time": "xxxx",
+            "pay_first_fee": "xxxx",
+            "pay_second_tag": "xxxx",
+            "pay_second_time": "xxxx",
+            "pay_second_fee": "xxxx",
+            "update_time": "xxxx"
+        }
+
+    ],
+    "fileUrl":"...."
+}
