@@ -15,10 +15,10 @@ var data2i = require('../data2i.json')
 
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
-// automatically open browser, if not set will be false
+  // automatically open browser, if not set will be false
 var autoOpenBrowser = !!config.dev.autoOpenBrowser
-// Define HTTP proxies to your custom API backend
-// https://github.com/chimurai/http-proxy-middleware
+  // Define HTTP proxies to your custom API backend
+  // https://github.com/chimurai/http-proxy-middleware
 var proxyTable = config.dev.proxyTable
 
 var app = express()
@@ -27,7 +27,9 @@ var compiler = webpack(webpackConfig)
 /*myOwnCode*/
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 console.log(__dirname + ',' + data2i);
 var apiRouter = express.Router();
 apiRouter.get('/products', (req, res) => {
@@ -35,17 +37,37 @@ apiRouter.get('/products', (req, res) => {
 });
 apiRouter.post('/login', (req, res) => {
   if (req.body.username == 'bobo' && req.body.password == '123456') {
-    res.json({ status: 0, msg: 'OK', res: { token: '111' } });
+    res.json({
+      status: 0,
+      msg: 'OK',
+      res: {
+        token: '111'
+      }
+    });
   } else {
-    res.json({ status: 401, msg: '账户名或密码错误'});
+    res.json({
+      status: 401,
+      msg: '账户名或密码错误'
+    });
   }
 });
 apiRouter.post('/logout', (req, res) => {
-  res.json({ status: 0, msg: 'OK' });
+  res.json({
+    status: 0,
+    msg: 'OK'
+  });
 });
 apiRouter.get('/getUserInfo', (req, res) => {
   console.log(req);
-  res.json({ status: 0, msg: 'OK', res: { username: 'bobo', avatar: 'photo.png', roles: 'admin' } });
+  res.json({
+    status: 0,
+    msg: 'OK',
+    res: {
+      username: 'bobo',
+      avatar: 'photo.png',
+      roles: ['admin']
+    }
+  });
 });
 app.use('/api', apiRouter);
 
@@ -55,12 +77,14 @@ var devMiddleware = require('webpack-dev-middleware')(compiler, {
 })
 
 var hotMiddleware = require('webpack-hot-middleware')(compiler, {
-  log: () => {}
-})
-// force page reload when html-webpack-plugin template changes
+    log: () => {}
+  })
+  // force page reload when html-webpack-plugin template changes
 compiler.plugin('compilation', function(compilation) {
   compilation.plugin('html-webpack-plugin-after-emit', function(data, cb) {
-    hotMiddleware.publish({ action: 'reload' })
+    hotMiddleware.publish({
+      action: 'reload'
+    })
     cb()
   })
 })
@@ -69,7 +93,9 @@ compiler.plugin('compilation', function(compilation) {
 Object.keys(proxyTable).forEach(function(context) {
   var options = proxyTable[context]
   if (typeof options === 'string') {
-    options = { target: options }
+    options = {
+      target: options
+    }
   }
   app.use(proxyMiddleware(options.filter || context, options))
 })
@@ -98,7 +124,7 @@ var readyPromise = new Promise(resolve => {
 console.log('> Starting dev server...')
 devMiddleware.waitUntilValid(() => {
   console.log('> Listening at ' + uri + '\n')
-  // when env is testing, don't need open it
+    // when env is testing, don't need open it
   if (autoOpenBrowser && process.env.NODE_ENV !== 'testing') {
     opn(uri)
   }

@@ -63,9 +63,8 @@ export default {
                     this.$store.dispatch('login', this.formData).then((res) => {
                         this.loading = false;
                         // 页面跳转
-                        if (res.token) {
-                            // 说明账户和密码有效,开始路由跳转
-                        }
+                        console.log('login tiaozhuan', res.token);
+                            this.$router.push({path: '/'});
                     }).catch(error => {
                         console.log('login.vue error', error);
                         this.loading = false;

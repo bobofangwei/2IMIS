@@ -57,7 +57,7 @@ const userInfo = {
           commit(types.SET_NAME, res.username);
           commit(types.SET_ROLES, res.roles);
           commit(types.SET_AVATAE, res.avatar);
-          resolve();
+          resolve(res);
         }).catch(error => {
           reject(error);
         })

@@ -10,13 +10,57 @@ import axios from 'axios'
 import store from './store/index.js';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import {
+  getToken
+} from '@/util/auth.js';
 
 Vue.config.productionTip = false
 Vue.use(ElementUi);
 /* eslint-disable no-new */
 
+// 无需登录即可访问的页面
+const whiteList = ['/login'];
+router.beforeEach((to, from, next) => {
+  NProgress.start();
+  console.log('beforeEach to', to);
+  if (getToken()) {
+    console.log('getToken');
+    if (to.path === '/login') {
+      next({
+        path: '/'
+      });
+    } 
+    if (store.getters.roles.length === 0) {
+      store.dispatch('getUserInfo').then(res => {
+        const roles = res.roles;
+        store.dispatch('generateRouters', roles).then(() => {
+          router.addRoutes(store.getters.addRouters);
+          next({ ...to
+          });
+        });
+      })
+    } else {
+      next();
+    }
+  } else {
+    console.log('no Token');
+    // cookie中没有存储用户信息
+    if (whiteList.indexOf(to.path) >= 0) {
+      next();
+    } else {
+      // 如果不使用白名单判断的话，就一直死循环了
+      next({
+        path: '/login'
+      });
+    }
+    NProgress.done();
+  }
+});
+router.afterEach(() => {
+  NProgress.done();
+});
 new Vue({
-    router,
-    store,
-    render: h => h(App)
+  router,
+  store,
+  render: h => h(App)
 }).$mount('#app');
