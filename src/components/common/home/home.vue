@@ -37,7 +37,7 @@ export default {
     }
     .home-sidebar {
         position: fixed;
-        width: 250px;
+        width: 220px;
         top: 80px;
         bottom: 0;
         left: 0;
@@ -49,7 +49,7 @@ export default {
     .home-content {
         position: absolute;
         top: 80px;
-        left: 250px;
+        left: 220px;
         right: 0;
         padding: 20px 0;
     }

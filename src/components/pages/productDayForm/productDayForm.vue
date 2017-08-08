@@ -1,10 +1,7 @@
 <template>
     <div class="productDayForm-wrapper">
         <div class="main-wrapper">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-setting"></i> 日报表</el-breadcrumb-item>
-                <el-breadcrumb-item>产品发展报表</el-breadcrumb-item>
-            </el-breadcrumb>
+            <breadbar></breadbar>
             <div class="query-form-wrapper">
                 <el-form ref="form" label-position="left" :module="queryFormData" label-width="100px" :inline="true">
                     <el-form-item label="更改地域:">
@@ -13,25 +10,26 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item>
-                         <el-button type="primary" @click="queryByProvince">查询</el-button>
+                        <el-button type="primary" @click="queryByProvince">查询</el-button>
+                        <download-btn :data="productData" :header="tableHeaderData"></download-btn>
                     </el-form-item>
                 </el-form>
             </div>
             <div class="data-form-wrapper">
-                 <el-table   :data="productData"  border      style="width: 100%">
-                <el-table-column v-for="item in tableHeaderData"
+                <el-table  :header="tableHeaderData"  :data="productData"  border  style="width: 100%">
+                    <el-table-column v-for="item in tableHeaderData"
                   :prop="item.prop"
                   :label="item.label"
-                 >
-                </el-table-column>
-               
-              </el-table>
+                 ></el-table-column>
+                </el-table>
             </div>
         </div>
     </div>
 </template>
 <script type="text/javascript">
 import Schart from 'vue-schart';
+import breadbar from '@/components/common/breadbar/breadbar.vue';
+import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
     export default{
         data: function() {
             return {
@@ -100,6 +98,10 @@ import Schart from 'vue-schart';
                 }
             };
         },
+        components: {
+            breadbar,
+            downloadBtn
+        },
         methods: {
             queryByProvince: function() {
                 console.log(JSON.stringify(this.queryFormData));
@@ -116,6 +118,5 @@ import Schart from 'vue-schart';
     .query-form-wrapper{
         margin-top:15px;
     }
-
 }
 </style>

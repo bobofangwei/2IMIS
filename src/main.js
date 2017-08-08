@@ -22,7 +22,6 @@ Vue.use(ElementUi);
 const whiteList = ['/login'];
 router.beforeEach((to, from, next) => {
   NProgress.start();
-  console.log('beforeEach to', to);
   if (getToken()) {
     console.log('getToken');
     if (to.path === '/login') {
@@ -43,7 +42,6 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    console.log('no Token');
     // cookie中没有存储用户信息
     if (whiteList.indexOf(to.path) >= 0) {
       next();

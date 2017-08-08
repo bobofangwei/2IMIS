@@ -1,51 +1,25 @@
 <template>
     <div class="sidebar">
-        <el-menu default-active="normalTable" theme="dark" class="el-menu-vertical-demo" unique-opened router>
-            <template v-for="item in menuData" v-if="item.children">
-                <el-submenu :index="item.index">
-                    <template slot="title"><i :class="item.icon"></i>{{item.text}}</template>
-                    <el-menu-item v-for="childItem in item.children" :index="childItem.index">{{childItem.text}}</el-menu-item>
+        <el-menu default-active="$route.path" theme="dark" class="el-menu-vertical-demo" unique-opened router>
+            <template v-for="item in allRouters" v-if="!item.meta.hidden && item.children">
+                <el-submenu :index="item.path">
+                    <template slot="title"><i :class="item.meta.icon"></i>{{item.meta.title}}</template>
+                    <el-menu-item v-for="childItem in item.children" v-if="!item.meta.hidden" :index="item.path+'/'+childItem.path">{{childItem.meta.title}}</el-menu-item>
                 </el-submenu>
             </template>
-            <template v-else>
-                <el-menu-item :index="item.index"><i :class="item.icon"></i>{{item.text}}</el-menu-item>
+            <template v-else-if="!item.meta.hidden">
+                <el-menu-item :index="item.path">{{item.meta.title}}</el-menu-item>
             </template>
         </el-menu>
     </div>
 </template>
 <script type="text/javascript">
+import {mapGetters} from 'vuex';
 export default {
-    data: function() {
-        return {
-            menuData: [ {
-                index: '1',
-                text: '日报表',
-                icon: 'el-icon-document',
-                children: [{
-                    index: 'productDayForm',
-                    route: '/productDayForm',
-                    text: '产品发展报表'
-                },
-                {
-                    index: 'provinceDayForm',
-                    route: '/reportForm',
-                    text: '区域发展报表'
-                }]
-            }, {
-                index: '2',
-                text: '明细',
-                icon: 'el-icon-setting',
-                children: [{
-                    index: 'basicInfo',
-                    route: '/basicInfo',
-                    text: '基本信息'
-                }, {
-                    index: 'monthData',
-                    route: '/monthData',
-                    text: '月度数据'
-                }]
-            }]
-        };
+    computed: {
+        ...mapGetters([
+            'allRouters'
+        ])
     }
 };
 </script>

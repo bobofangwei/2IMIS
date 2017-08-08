@@ -1,10 +1,7 @@
 <template>
     <div class="provinceDayForm-wrapper">
         <div class="main-wrapper">
-            <el-breadcrumb separator="/">
-                <el-breadcrumb-item> <i class="el-icon-setting"></i> 日报表</el-breadcrumb-item>
-                <el-breadcrumb-item>区域发展报表</el-breadcrumb-item>
-            </el-breadcrumb>
+            <breadbar></breadbar>
             <div class="query-form-wrapper">
                 <el-form label-position="left" ref="form" :module="queryFormData" label-width="150px" :inline="true">
                     <el-form-item label="更改产品类型:">
@@ -31,6 +28,7 @@
     </div>
 </template>
 <script type="text/javascript">
+import breadbar from '@/components/common/breadbar/breadbar.vue';
     export default{
         data: function() {
             return {
@@ -95,6 +93,9 @@
             queryByProvince: function() {
                 console.log(JSON.stringify(this.queryFormData));
             }
+        },
+        components: {
+            breadbar
         }
     };
 </script>

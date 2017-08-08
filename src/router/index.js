@@ -10,53 +10,62 @@ const monthData = (resolve) => require(['../components/pages/monthData/monthData
 Vue.use(Router)
 
 export const constantRouterMap = [{
-        path: '/login',
-        component: login,
-        hidden: true,
-        name: 'login'
-    }, {
-        path: '/',
-        component: home,
-        redirect: '/dayForm/productDayForm',
-        name: 'home',
-        hidden: true
-    }
-];
+    path: '/login',
+    component: login,
+    hidden: true,
+    name: 'login',
+    meta: {hidden: true}
+}, {
+    path: '/',
+    component: home,
+    redirect: '/dayForm/productDayForm',
+    name: 'home',
+    hidden: true,
+    meta: {hidden: true}
+}];
 
 export const asyncRouterMap = [{
     path: '/dayForm',
     component: home,
     redirect: '/dayForm/productDayForm',
     name: 'dayForm',
-    icon: 'el-icon-document',
-    title: '日报表',
+    meta: {
+        title: '日报表',
+        icon: 'el-icon-document'
+    },
     children: [{
         path: 'productDayForm',
         component: productDayForm,
         name: 'productDayForm',
-        title: '产品发展报表'
+        meta: {
+            title: '产品发展报表'
+        }
     }, {
         path: 'provinceDayForm',
         component: provinceDayForm,
         name: 'productDayForm',
-        title: '区域发展报表'
+        meta: {
+            title: '区域发展报表'
+        }
     }]
 }, {
-  path: '/detail',
-  component: home,
-  redirect: '/detail/basicInfo',
-  name: 'detail',
-  titel: '明细',
-  icon: 'el-icon-setting',
-  children: [{
-    path: 'basicInfo',
-    component: basicInfo,
-    name: 'basicInfo',
-    title: '基本信息',
+    path: '/detail',
+    component: home,
+    redirect: '/detail/basicInfo',
+    name: 'detail',
     meta: {
-      role: ['admin']
-    }
-  }]
+        title: '明细',
+        icon: 'el-icon-menu'
+    },
+    children: [{
+        path: 'basicInfo',
+        component: basicInfo,
+        name: 'basicInfo',
+        meta: {
+            role: ['admin'],
+            title: '基本信息'
+        }
+    }]
 }
 ];
 export default new Router({
