@@ -49,7 +49,7 @@
 
 //4.用户信息请求接口
 //请求方式：get
-//请求地址：xxxx?token="xxxxx" token为服务器端返回的token字符串
+//请求地址：xxxx
 //返回数据格式
 {
   "status":0,

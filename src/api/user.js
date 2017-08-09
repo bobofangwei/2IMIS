@@ -9,7 +9,7 @@ export function login(username, password) {
 export function getUserInfo(token) {
   return axios.request({
     url: getInfoUrl,
-    params: { token },
+    // params: { token },
     method: 'GET'
   });
 };

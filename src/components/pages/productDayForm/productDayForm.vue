@@ -27,7 +27,6 @@
     </div>
 </template>
 <script type="text/javascript">
-import Schart from 'vue-schart';
 import breadbar from '@/components/common/breadbar/breadbar.vue';
 import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
     export default{

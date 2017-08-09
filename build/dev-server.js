@@ -30,46 +30,44 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-console.log(__dirname + ',' + data2i);
 var apiRouter = express.Router();
-apiRouter.get('/products', (req, res) => {
-  res.json(data2i.products);
-});
-apiRouter.post('/login', (req, res) => {
-  if (req.body.username == 'bobo' && req.body.password == '123456') {
-    res.json({
-      status: 0,
-      msg: 'OK',
-      res: {
-        token: '111'
-      }
-    });
-  } else {
-    res.json({
-      status: 401,
-      msg: '账户名或密码错误'
-    });
-  }
-});
-apiRouter.post('/logout', (req, res) => {
-  res.json({
-    status: 0,
-    msg: 'OK'
-  });
-});
-apiRouter.get('/getUserInfo', (req, res) => {
-  console.log(req);
-  res.json({
-    status: 0,
-    msg: 'OK',
-    res: {
-      username: 'bobo',
-      avatar: 'photo.png',
-      roles: ['admin']
-    }
-  });
-});
-app.use('/api', apiRouter);
+// apiRouter.get('/products', (req, res) => {
+//   res.json(data2i.products);
+// });
+// apiRouter.post('/login', (req, res) => {
+//   if (req.body.username == 'bobo' && req.body.password == '123456') {
+//     res.json({
+//       status: 0,
+//       msg: 'OK',
+//       res: {
+//         token: '111'
+//       }
+//     });
+//   } else {
+//     res.json({
+//       status: 401,
+//       msg: '账户名或密码错误'
+//     });
+//   }
+// });
+// apiRouter.post('/logout', (req, res) => {
+//   res.json({
+//     status: 0,
+//     msg: 'OK'
+//   });
+// });
+// apiRouter.get('/getUserInfo', (req, res) => {
+//   res.json({
+//     status: 0,
+//     msg: 'OK',
+//     res: {
+//       username: 'bobo',
+//       avatar: 'photo.png',
+//       roles: ['admin']
+//     }
+//   });
+// });
+// app.use('/api', apiRouter);
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
