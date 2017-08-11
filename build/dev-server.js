@@ -13,6 +13,9 @@ var proxyMiddleware = require('http-proxy-middleware')
 var webpackConfig = require('./webpack.dev.conf')
 var data2i = require('../data2i.json')
 
+// mycode
+// var axios = require('axios');
+
 // default port where dev server listens for incoming traffic
 var port = process.env.PORT || config.dev.port
   // automatically open browser, if not set will be false
@@ -25,30 +28,40 @@ var app = express()
 var compiler = webpack(webpackConfig)
 
 /*myOwnCode*/
-var bodyParser = require('body-parser');
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({
-  extended: true
-}));
-var apiRouter = express.Router();
-// apiRouter.get('/products', (req, res) => {
-//   res.json(data2i.products);
-// });
+// var bodyParser = require('body-parser');
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({
+//   extended: true
+// }));
+// var apiRouter = express.Router();
+// // apiRouter.get('/products', (req, res) => {
+// //   res.json(data2i.products);
+// // });
 // apiRouter.post('/login', (req, res) => {
-//   if (req.body.username == 'bobo' && req.body.password == '123456') {
-//     res.json({
-//       status: 0,
-//       msg: 'OK',
-//       res: {
-//         token: '111'
-//       }
-//     });
-//   } else {
-//     res.json({
-//       status: 401,
-//       msg: '账户名或密码错误'
-//     });
-//   }
+//   console.log('login req body', req.body);
+//   // if (req.body.username == 'bobo' && req.body.password == '123456') {
+//   //   res.json({
+//   //     status: 0,
+//   //     msg: 'OK',
+//   //     res: {
+//   //       token: '111'
+//   //     }
+//   //   });
+//   // } else {
+//   //   res.json({
+//   //     status: 401,
+//   //     msg: '账户名或密码错误'
+//   //   });
+//   // }
+//   // 尝试自己写转发
+//   var url = "http://10.3.117.23:8080/BaseController/login";
+//   axios.post(url, req.body).then((response) => {
+//     // console.log('response', response);
+//     res.json(response.data);
+//   }).catch((error) => {
+//     console.log(error);
+//   });
+
 // });
 // apiRouter.post('/logout', (req, res) => {
 //   res.json({

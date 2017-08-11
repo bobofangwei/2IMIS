@@ -20,8 +20,14 @@
 </template>
 <script type="text/javascript">
 import { getToken } from '@/util/auth.js'; 
+import {getUserInfo} from '@/api/user.js';
 export default {
     name: 'login',
+    // created: function() {
+    //     getUserInfo().then(() => {
+    //         console.log('getUserInfo');
+    //     });
+    // },
     data: function() {
         var validPass = (rule, value, callback) => {
             if (!value) {
@@ -64,7 +70,7 @@ export default {
                         this.loading = false;
                         // 页面跳转
                         console.log('login tiaozhuan', res.token);
-                            this.$router.push({path: '/'});
+                        this.$router.push({path: '/'});
                     }).catch(error => {
                         console.log('login.vue error', error);
                         this.loading = false;

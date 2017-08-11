@@ -32,7 +32,7 @@ const userInfo = {
           // 设置cookie
           setToken(res.token);
           commit(types.SET_TOKEN, res.token);
-          resolve(res.token);
+          resolve(res);
         }).catch((error) => {
           reject(error);
         })
