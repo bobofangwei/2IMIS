@@ -23,12 +23,22 @@ export default {
   },
   methods: {
     handleClick: function() {
+      if (!this.data || this.data.length <= 0) {
+        this.$message({
+          message: '请先进行查询操作!',
+          type: 'error'
+        });
+        return;
+      }
       var csvContent = 'data:text/csv;charset=utf-8,\ufeff';
-      csvContent += this.deadedHeader + '\n';
+      csvContent += this.headerLabel + '\n';
       this.data.forEach((item, index) => {
         let dataString = '';
-        for (var key in item) {
-          dataString += item[key] + ',';
+        // for (var key in item) {
+        //   dataString += item[key] + ',';
+        // }
+        for (let i = 0; i < this.headerProp.length; i++) {
+          dataString += item[this.headerProp[i]] + ',';
         }
         csvContent += index < this.data.length ? dataString.replace(/,$/, '\n') : dataString.replace(/,$/, '');
       });
@@ -38,12 +48,19 @@ export default {
   },
   computed: {
     // 要求head是数组，数组中的每个元素是对象，并且每个对象都有label属性
-    deadedHeader: function() {
+    headerLabel: function() {
       let result;
       result = this.header.map((item) => {
         return item.label;
       })
       result = result.join(',');
+      return result;
+    },
+    headerProp: function() {
+      let result;
+      result = this.header.map((item) => {
+        return item.prop;
+      })
       return result;
     }
   }

@@ -5,7 +5,9 @@ const home = (resolve) => require(['../components/common/home/home.vue'], resolv
 const basicInfo = (resolve) => require(['../components/pages/basicInfo/basicInfo.vue'], resolve);
 const productDayForm = (resolve) => require(['../components/pages/productDayForm/productDayForm.vue'], resolve);
 const provinceDayForm = (resolve) => require(['../components/pages/provinceDayForm/provinceDayForm.vue'], resolve);
-const monthData = (resolve) => require(['../components/pages/monthData/monthData.vue'], resolve);
+const productMonthForm = (resolve) => require(['../components/pages/productMonthForm/productMonthForm.vue'], resolve);
+const provinceMonthForm = (resolve) => require(['../components/pages/provinceMonthForm/provinceMonthForm.vue'], resolve);
+const userManage = (resolve) => require(['../components/pages/userManage/userManage.vue'], resolve);
 // 测试用
 const dashboard = (resolve) => require(['../components/pages/dashboard/dashboard.vue'], resolve);
 const errorPage = (resolve) => require(['../components/pages/404/404.vue'], resolve);
@@ -32,7 +34,9 @@ export const constantRouterMap = [{
     path: 'test',
     component: dashboard,
     name: 'test',
-    meta: { hidden: true }
+    meta: {
+      hidden: true
+    }
   }]
 }];
 
@@ -40,24 +44,50 @@ export const asyncRouterMap = [{
   path: '/dayForm',
   component: home,
   redirect: '/dayForm/productDayForm',
-  name: 'dayForm',
+  name: 'dayForm',  
   meta: {
     title: '日报表',
-    icon: 'el-icon-document'
+    icon: 'el-icon-date',
+    dropdown: true
   },
   children: [{
     path: 'productDayForm',
     component: productDayForm,
     name: 'productDayForm',
     meta: {
-      title: '产品发展报表'
+      title: '产品日报表'
     }
   }, {
     path: 'provinceDayForm',
     component: provinceDayForm,
-    name: 'productDayForm',
+    name: 'provinceDayForm',
     meta: {
-      title: '区域发展报表'
+      title: '区域日报表'
+    }
+  }]
+}, {
+  path: '/monthForm',
+  component: home,
+  redirect: '/monthForm/productMonthForm',
+  name: 'monthForm',
+  meta: {
+    title: '月报表',
+    icon: 'el-icon-document',
+    dropdown: true
+  },
+  children: [{
+    path: 'productMonthForm',
+    component: productMonthForm,
+    name: 'productMonthForm',
+    meta: {
+      title: '产品月报表'
+    }
+  }, {
+    path: 'provinceMonthForm',
+    component: provinceMonthForm,
+    name: 'productMonthForm',
+    meta: {
+      title: '区域月报表'
     }
   }]
 }, {
@@ -67,15 +97,34 @@ export const asyncRouterMap = [{
   name: 'detail',
   meta: {
     title: '明细',
-    icon: 'el-icon-menu'
+    icon: 'el-icon-menu',
+    dropdown: true
   },
   children: [{
     path: 'basicInfo',
     component: basicInfo,
     name: 'basicInfo',
     meta: {
-      role: ['admin'],
       title: '基本信息'
+    }
+  }]
+}, {
+  path: '/manage',
+  component: home,
+  name: 'manage',
+  redirect: '/manage/userManage',
+  meta: {
+    title: '设置',
+    icon: 'el-icon-star-on',
+    dropdown: false
+  },
+  children: [{
+    path: 'userManage',
+    component: userManage,
+    name: 'userManage',
+    meta: {
+      role: ['admin'],
+      title: '用户管理'
     }
   }]
 }, {

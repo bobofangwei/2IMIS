@@ -19,7 +19,7 @@ Vue.use(ElementUi);
 /* eslint-disable no-new */
 
 // 无需登录即可访问的页面
-const whiteList = ['/login'];
+const whiteList = ['/login', '/manage/userManage'];
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {

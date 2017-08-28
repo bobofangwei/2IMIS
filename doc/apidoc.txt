@@ -1,33 +1,5 @@
-/*公共接口*/
 
-//1.地域接口
-/****公共接口*****/
-//请求方式：get
-//请求地址：xxxx
-//返回数据格式：
-{
-  "status":0,
-  "msg":"",
-  "res":{
-    "0":"北京",
-    "1":"上海"
-  }
-}
-
-//2.产品接口
-//请求方式：get
-//请求地址：xxxx
-//返回数据格式
-{
-  "status":0,
-  "msg":"",
-  "res":{
-    "0":"腾讯网卡",
-    "1":"蚂蚁宝卡"
-  }
-}
-
-//3.登录接口
+//1.登录接口
 //请求方式：post
 //请求地址：xxxx
 //请求数据格式
@@ -47,7 +19,7 @@
   "msg":"账户或密码错误",
 }
 
-//4.用户信息请求接口
+//2.用户信息请求接口
 //请求方式：get
 //请求地址：xxxx
 //返回数据格式
@@ -61,7 +33,7 @@
   }
 }
 
-//4.用户注销接口
+//3.用户注销接口
 //请求方式：post
 //请求地址：xxxx
 //请求数据格式
@@ -73,102 +45,105 @@
 }
 
 
-/******产品发展报表页面******/
+/******产品日报表页面******/
 
 //1. 根据地域请求报表信息
 // 请求方式:post
 // 请求地址：xxxxx
 // 请求数据格式
-{"selectedProvince":"1"}//如果为0代表全国，其他为对应省分编码
+{"selectedProvince": "13", "selectedDate": "2017-8-17 00:00:00"}//selectedProvince为对应省分编码
 //返回数据格式：
 //{
   "status":0,//接口状态字段
   "msg":"",//出错信息字段，（接口返回有误时有值）
   "res":[{
-    'product': '腾讯王卡',//产品名称
-    'yesterdayXinzeng': 110,//昨日新增
-    'monthXinzeng': 111111,//上月新增
-    'yesterdayTingji': 105,//昨日停机
-    'yesterdayQianfei': 101,//昨日欠费
-    'yesterdayXiaohu': 1000,//昨日销户
-    'yesterdayShouchong': 101,//昨日首充
-    'sumUser': 111111 //用户总数
-      }, {
-    'product': '蚂蚁宝卡',
-    'yesterdayXinzeng': 110,
-    'monthXinzeng': 111111,
-    'yesterdayTingji': 105,
-    'yesterdayQianfei': 101,
-    'yesterdayXiaohu': 1000,
-    'yesterdayShouchong': 101,
-    'sumUser': 111111
-  }]
+    'product_id: '1',//产品对应编码
+    'product_name': '大王卡', //产品名称
+    'yes_add': 110,//当日新增
+    'mon_add': 111111,//当月新增
+    'yes_tingji': 105,//当日停机
+    'yes_qianfei': 101,//当日欠费
+    'yes_xiaohu': 1000,//当日销户
+    'yes_shouchong': 101,//当日首充
+    'sum_user': 111111 //用户总数
+      }]
 }
 
-/******产品发展报表页面******/
+/******区域日报表页面******/
 
 //1. 根据产品类型请求报表信息
 // 请求方式:post
 // 请求地址：xxxxx
 // 请求数据格式
-{"selectedProduct":"1"}//如果为0代表所有产品合计，其他为对应产品编码
+{"selectedProduct": "90065148", "selectedDate": "2017-8-16 00:00:00"}//selectedProduct为对应产品编码
 //返回数据格式：
 {
   "status":0,
   "msg":"",
   "res":[{
-    'province': '北京',//产品名称
-    'yesterdayXinzeng': 110,//昨日新增
-    'monthXinzeng': 111111,//上月新增
-    'yesterdayTingji': 105,//昨日停机
-    'yesterdayQianfei': 101,//昨日欠费
-    'yesterdayXiaohu': 1000,//昨日销户
-    'yesterdayShouchong': 101,//昨日首充
-    'sumUser': 111111 //用户总数
-      }, {
-    'product': '上海',
-    'yesterdayXinzeng': 110,
-    'monthXinzeng': 111111,
-    'yesterdayTingji': 105,
-    'yesterdayQianfei': 101,
-    'yesterdayXiaohu': 1000,
-    'yesterdayShouchong': 101,
-    'sumUser': 111111
-  }]
+    'province_code': '1',//省份对应编码
+    'province_name': '河南',//省份名称
+    'yes_add': 110,//当日新增
+    'mon_add': 111111,//当月新增
+    'yes_tingji': 105,//当日停机
+    'yes_qianfei': 101,//当日欠费
+    'yes_xiaohu': 1000,//当日销户
+    'yes_shouchong': 101,//当日首充
+    'sum_user': 111111 //用户总数
+      }]
 }
 
-/******发展报表页面******/
+/******产品月报表页面******/
 
+//1. 根据地域请求报表信息
+// 请求方式:post
+// 请求地址：xxxxx
+// 请求数据格式
+{"selectedProvince": "13", "selectedDate": "2017-8-17 00:00:00"}//selectedProvince为对应省分编码
+//返回数据格式：
+//{
+  "status":0,//接口状态字段
+  "msg":"",//出错信息字段，（接口返回有误时有值）
+  "res":[{
+    'product_id: '1',//产品对应编码
+    'product_name': '大王卡', //产品名称
+    'last_mon_add': 110,//上月新增
+    'mon_add': 111111,//当月新增
+    'mon_tingji': 105,//当月停机
+    'mon_qianfei': 101,//当月欠费
+    'mon_xiaohu': 1000,//当月销户
+    'mon_shouchong': 101,//当月首充
+    'sum_user': 111111 //用户总数
+      }]
+}
+
+/******区域月页面******/
+
+//1. 根据产品类型请求报表信息
+// 请求方式:post
+// 请求地址：xxxxx
+// 请求数据格式
+{"selectedProduct": "90065148", "selectedDate": "2017-8-16 00:00:00"}//selectedProduct为对应产品编码
+//返回数据格式：
+{
+  "status":0,
+  "msg":"",
+  "res":[{
+    'province_code': '1',//省份对应编码
+    'province_name': '河南',//省份名称
+    'last_mon_add': 110,//上月新增
+    'mon_add': 111111,//当月新增
+    'mon_tingji': 105,//当月停机
+    'mon_qianfei': 101,//当月欠费
+    'mon_xiaohu': 1000,//当月销户
+    'mon_shouchong': 101,//当月首充
+    'sum_user': 111111 //用户总数
+      }]
+}
 
 /****基本信息页面****/
 
-//1.页面初始化接口
-//请求方式get
-//请求地址:xxxxx
-//返回数据格式：
-{
-  "config":
-  {
-    "provinces":
-    {
-      0: "北京",
-      1: "上海"
-    },
-    "products":
-    {
-      0: "腾讯大王卡",
-      1: "蚂蚁宝卡"
-    },
-    "states":
-    {
-      0: "正常",
-      1: "全停",
-      2: "半停"
-    }
-  }
-}
-
-//2.查询接口
+//1. 查询接口
 //请求方式post(待定)
 //请求地址：xxxxx
 //请求数据格式：

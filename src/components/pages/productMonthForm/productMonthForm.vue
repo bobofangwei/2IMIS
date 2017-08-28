@@ -6,11 +6,11 @@
         <el-form ref="form" label-position="left" :model="queryFormData" label-width="100px" :inline="true" :rules="queryFormRules">
           <el-form-item prop="selectedProvince" required>
             <el-select v-model="queryFormData.selectedProvince" placeholder="请选择地域">
-              <el-option v-for="(province,code) in provinces" :key="code" :value="code" :label="province"></el-option>
+              <el-option v-for="(province,code) in provinceMap" :key="code" :value="code" :label="province"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item prop="selectedDate" required>
-            <el-date-picker v-model="queryFormData.selectedDate" align="left" type="date" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
+            <el-date-picker v-model="queryFormData.selectedDate" align="left" type="month" placeholder="选择月份" :picker-options="pickerOptions"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="queryByProvince">查询</el-button>
@@ -29,7 +29,7 @@
 <script type="text/javascript">
 import breadbar from '@/components/common/breadbar/breadbar.vue';
 import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
-import { queryDayformByProvince } from '@/api/dayForm.js';
+import { queryMonthformByProvince } from '@/api/monthForm.js';
 import { mapGetters } from 'vuex';
 
 export default {
@@ -51,7 +51,7 @@ export default {
         }
       },
       isLoading: false,
-      tableMsg: '请选择地域和日期,进行查询',
+      tableMsg: '请选择地域和月份,进行查询',
       tableHeaderData: [{
           prop: 'product_name',
           label: '类别'
@@ -59,24 +59,24 @@ export default {
           prop: 'sum_user',
           label: '用户总数'
         }, {
-          prop: 'yes_add',
-          label: '当日新增'
+          prop: 'last_mon_add',
+          label: '上月新增'
         }, {
           prop: 'mon_add',
           label: '当月新增'
         }, {
-          prop: 'yes_tingji',
-          label: '当日停机'
+          prop: 'mon_tingji',
+          label: '当月停机'
         }, {
-          prop: 'yes_qianfei',
-          label: '当日欠费'
+          prop: 'mon_qianfei',
+          label: '当月欠费'
         }, {
-          prop: 'yes_xiaohu',
-          label: '当日销户'
+          prop: 'mon_xiaohu',
+          label: '当月销户'
         },
         {
-          prop: 'yes_shouchong',
-          label: '当日首充'
+          prop: 'mon_shouchong',
+          label: '当月首充'
         }
       ],
       productData: null
@@ -92,11 +92,10 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.isLoading = true;
-          queryDayformByProvince(this.queryFormData.selectedProvince, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
+          queryMonthformByProvince(this.queryFormData.selectedProvince, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
             // console.log(res);
-            this.productData = this.dealQueryResult(res);
             this.isLoading = false;
-            // console.log('productData', this.productData);
+            this.productData = this.dealQueryResult(res);
           }).catch((err) => {
             this.isLoading = false;
             this.tableMsg = '服务器汇报了一个错误，工程师正在紧急处理中...';
@@ -121,10 +120,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      'productMap': 'productMap',
-      'provinces': 'provinceMapWithQuanguo'
-    })
+    ...mapGetters([
+      'productMap',
+      'provinceMap'
+    ])
   }
 };
 

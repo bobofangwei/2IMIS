@@ -10,7 +10,7 @@
             </el-select>
           </el-form-item>
           <el-form-item prop="selectedDate">
-            <el-date-picker v-model="queryFormData.selectedDate" placeholder="选择日期" :picker-options="pickerOptions"></el-date-picker>
+            <el-date-picker v-model="queryFormData.selectedDate" placeholder="选择月份" type="month" :picker-options="pickerOptions"></el-date-picker>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="queryByProvince">查询</el-button>
@@ -31,13 +31,13 @@
 import breadbar from '@/components/common/breadbar/breadbar.vue';
 import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
 import { mapGetters } from 'vuex';
-import { queryDayformByProduct } from '@/api/dayForm.js';
+import { queryMonthformByProduct } from '@/api/monthForm.js';
 
 export default {
   data: function() {
     return {
       isLoading: false,
-      tableMsg: '请选择产品和日期，进行查询...',
+      tableMsg: '请选择产品和月份，进行查询...',
       queryFormData: {
         selectedProduct: '',
         selectedDate: ''
@@ -59,24 +59,24 @@ export default {
           prop: 'sum_user',
           label: '用户总数'
         }, {
-          prop: 'yes_add',
-          label: '昨日新增'
+          prop: 'last_mon_add',
+          label: '上月新增'
         }, {
           prop: 'mon_add',
-          label: '本月新增'
+          label: '当月新增'
         }, {
-          prop: 'yes_tingji',
-          label: '昨日停机'
+          prop: 'mon_tingji',
+          label: '当月停机'
         }, {
-          prop: 'yes_qianfei',
-          label: '昨日欠费'
+          prop: 'mon_qianfei',
+          label: '当月欠费'
         }, {
-          prop: 'yes_xiaohu',
-          label: '昨日销户'
+          prop: 'mon_xiaohu',
+          label: '当月销户'
         },
         {
-          prop: 'yes_shouchong',
-          label: '昨日首充'
+          prop: 'mon_shouchong',
+          label: '当月首充'
         }
       ],
       productData: null
@@ -85,12 +85,13 @@ export default {
   methods: {
     queryByProvince: function() {
       this.$refs['form'].validate((valid) => {
-        console.log('valid', valid);
+        // console.log('valid', valid);
         if (!valid) {
           return;
         }
         this.isLoading = true;
-        queryDayformByProduct(this.queryFormData.selectedProduct, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
+        queryMonthformByProduct(this.queryFormData.selectedProduct, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
+          // console.log(res);
           this.isLoading = false;
           this.productData = this.analyzeProvince(res);
         }).catch((err) => {
@@ -131,5 +132,4 @@ export default {
     margin: 15px 0 10px 0;
   }
 }
-
 </style>

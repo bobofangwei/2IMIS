@@ -3,7 +3,7 @@
 </template>
 <script type="text/javascript">
 var echarts = require('echarts/lib/echarts');
-require('echarts/lib/chart/pie');
+require('echarts/lib/chart/bar');
 require('echarts/theme/macarons');
 export default {
   props: {
@@ -27,7 +27,8 @@ export default {
     this.chart.showLoading();
     // 模拟从后台异步获取数据的过程
     setTimeout(() => {
-      this.chartData = [{ value: 20, name: '腾讯王卡' }, { value: 30, name: '蚂蚁宝卡' }];
+      this.chartData = this.generateData();
+      console.log('chartData', this.chartData);
     }, 1000);
   },
   watch: {
@@ -37,11 +38,16 @@ export default {
           this.chart.hideLoading();
           this.chart.setOption({
             series: [{
-              type: 'pie',
-              radius: '65%',
-              roseType: 'radius',
-              data: this.chartData
-            }]
+                type: 'bar',
+                name: '总用户数',
+                data: this.chartData[0]
+              },
+              {
+                type: 'bar',
+                name: '新增用户',
+                data: this.chartData[1]
+              }
+            ]
           });
         }
       }
@@ -63,16 +69,45 @@ export default {
         //   x: 'center'
         // },
         legend: {
-          x: 'center',
-          y: 'bottom',
-          data: ['腾讯王卡', '蚂蚁宝卡']
+         x: 'center',
+         y: 'bottom',
+         data: ['总用户数', '新增用户']
         },
         tooltip: {
-          trigger: 'item',
-          formatter: '{b} : {c}'
+          trigger: 'axis',
+          axisPointer: {
+            type: 'shadow',
+            label: {
+              show: true
+            }
+          }
         },
+        xAxis: [{
+          type: 'category',
+          data: this.generatexAxisData()
+        }],
+        yAxis: [{
+          type: 'value'
+        }],
         series: []
       });
+    },
+    generateData: function() {
+      var result = [];
+      for (var k = 0; k < 2; k++) {
+        result[k] = [];
+        for (var i = 1; i < 25; i++) {
+          result[k].push({ name: '卡' + i, value: Math.random() * 1000 + 9000 });
+        }
+      }
+      return result;
+    },
+    generatexAxisData: function() {
+      var result = [];
+      for (var i = 1; i < 25; i++) {
+        result.push('卡' + i);
+      }
+      return result;
     }
   }
 }

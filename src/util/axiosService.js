@@ -18,7 +18,7 @@ axiosService.interceptors.request.use((config) => {
 
 axiosService.interceptors.response.use((res) => {
   console.log('axiosService response', res);
-  if (res.data.status !== '0') {
+  if (res.data.status != '0') {
     Message({
       message: res.data.msg,
       type: 'error'

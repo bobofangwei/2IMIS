@@ -28,59 +28,49 @@ var app = express()
 var compiler = webpack(webpackConfig)
 
 /*myOwnCode*/
-// var bodyParser = require('body-parser');
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }));
-// var apiRouter = express.Router();
-// // apiRouter.get('/products', (req, res) => {
-// //   res.json(data2i.products);
-// // });
-// apiRouter.post('/login', (req, res) => {
-//   console.log('login req body', req.body);
-//   // if (req.body.username == 'bobo' && req.body.password == '123456') {
-//   //   res.json({
-//   //     status: 0,
-//   //     msg: 'OK',
-//   //     res: {
-//   //       token: '111'
-//   //     }
-//   //   });
-//   // } else {
-//   //   res.json({
-//   //     status: 401,
-//   //     msg: '账户名或密码错误'
-//   //   });
-//   // }
-//   // 尝试自己写转发
-//   var url = "http://10.3.117.23:8080/BaseController/login";
-//   axios.post(url, req.body).then((response) => {
-//     // console.log('response', response);
-//     res.json(response.data);
-//   }).catch((error) => {
-//     console.log(error);
-//   });
-
+var bodyParser = require('body-parser');
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+var apiRouter = express.Router();
+// apiRouter.get('/products', (req, res) => {
+//   res.json(data2i.products);
 // });
-// apiRouter.post('/logout', (req, res) => {
-//   res.json({
-//     status: 0,
-//     msg: 'OK'
-//   });
-// });
-// apiRouter.get('/getUserInfo', (req, res) => {
-//   res.json({
-//     status: 0,
-//     msg: 'OK',
-//     res: {
-//       username: 'bobo',
-//       avatar: 'photo.png',
-//       roles: ['admin']
-//     }
-//   });
-// });
-// app.use('/api', apiRouter);
+apiRouter.post('/login', (req, res) => {
+  if (req.body.username == 'bobo' && req.body.password == '123456') {
+    res.json({
+      status: 0,
+      msg: 'OK',
+      res: {
+        token: '111'
+      }
+    });
+  } else {
+    res.json({
+      status: 401,
+      msg: '账户名或密码错误'
+    });
+  }
+});
+apiRouter.post('/logout', (req, res) => {
+  res.json({
+    status: 0,
+    msg: 'OK'
+  });
+});
+apiRouter.get('/getUserInfo', (req, res) => {
+  res.json({
+    status: 0,
+    msg: 'OK',
+    res: {
+      username: 'bobo',
+      avatar: 'photo.png',
+      roles: ['admin']
+    }
+  });
+});
+app.use('/api', apiRouter);
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: webpackConfig.output.publicPath,
