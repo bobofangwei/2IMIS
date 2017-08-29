@@ -12,7 +12,7 @@
           <el-table-column label="姓名" prop="name"></el-table-column>
           <el-table-column label="公司" prop="company"></el-table-column>
           <el-table-column label="部门" prop="apartment"></el-table-column>
-          <el-table-column label="角色" prop="role"></el-table-column>
+          <el-table-column label="角色" prop="roleName"></el-table-column>
           <el-table-column label="操作">
             <template scope="scope">
               <el-button size="small" @click="handleEdit(scope)">编辑</el-button>
@@ -40,7 +40,6 @@
               <el-option v-for="(role, key) in roleMap" :label="role" :value="key"></el-option>
             </el-select>
           </el-form-item>
-          <div v-for="(role, key) in roleMap">{{role}},{{key}}</div>
           <el-form-item>
             <el-button type="primary" @click="handleCertain">确定</el-button>
             <el-button @click="closeDialog">取消</el-button>
@@ -57,10 +56,7 @@ export default {
     return {
       dialogVisible: false,
       dialogType: '', // 对话框的类型，是新增用户还是编辑用户
-      curUser: {
-        username: '',
-        role: ''
-      },
+      curUser: {},
       usernameDisabled: true,
       roleMap: {
         'admin': '管理员',
@@ -95,7 +91,7 @@ export default {
   methods: {
     dealUserData: function() {
       this.userList.map((item) => {
-        item.role = this.roleMap[item.role];
+        item.roleName = this.roleMap[item.role];
       });
     },
     handleEdit: function(scope) {
@@ -103,14 +99,17 @@ export default {
       this.usernameDisabled = true;
       this.curUser = Object.assign({}, this.userList[scope.$index]);
       this.dialogType = 'edit';
-      this.$nextTick(() => {
-        this.openDialog();
-      });
+      this.openDialog();
     },
     // 新增用户
     handleAdd: function() {
       this.usernameDisabled = false;
-      this.curUser = {};
+      if (this.$refs.userForm) {
+        // 坑1：需要重置下表单，否则除了第一次打开，后面每次打开都会出现校验信息
+        this.$refs.userForm.resetFields();
+      }
+      // 坑2：因为有下拉菜单，role这个属性必须存在，否则下拉菜单不能选择
+      this.curUser = { role: '' };
       this.dialogType = 'add';
       this.openDialog();
     },
@@ -140,18 +139,21 @@ export default {
         if (!valid) {
           return;
         }
-        this.curUser.role = this.roleMap[this.curUser.role];
+        // 坑3：curUser可能涉及属性的多次更改
+        // 因此新增的对象必须是当前curUser的复制版本
+        // 否则，curUser深层属性的再次更改会导致出现意向不到的结果
+        let user = Object.assign({}, this.curUser);
+        user.roleName = this.roleMap[user.role];
         if (this.dialogType === 'add') {
-          this.userList.unshift(this.curUser);
+          this.userList.unshift(user);
         } else if (this.dialogType === 'edit') {
           const index = this.userList.findIndex((item) => {
-            return item.username === this.curUser.username;
+            return item.username === user.username;
           });
-          console.log('index', index);
-          this.userList.splice(index, 1, this.curUser);
+          this.userList.splice(index, 1, user);
         }
+        console.log('确定后的用户信息', user);
         this.closeDialog();
-        console.log('确定后的用户信息', this.curUser);
       });
     },
     handleSelect: function(val) {
