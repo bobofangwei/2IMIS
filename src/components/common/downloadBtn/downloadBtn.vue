@@ -25,7 +25,7 @@ export default {
     handleClick: function() {
       if (!this.data || this.data.length <= 0) {
         this.$message({
-          message: '请先进行查询操作!',
+          message: '请先进行查询,并等待查询结果返回!',
           type: 'error'
         });
         return;
@@ -34,9 +34,6 @@ export default {
       csvContent += this.headerLabel + '\n';
       this.data.forEach((item, index) => {
         let dataString = '';
-        // for (var key in item) {
-        //   dataString += item[key] + ',';
-        // }
         for (let i = 0; i < this.headerProp.length; i++) {
           dataString += item[this.headerProp[i]] + ',';
         }

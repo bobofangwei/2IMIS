@@ -36,7 +36,7 @@ const provinceInfo = {
   },
   getters: {
     provinceMapWithQuanguo: (state) => {
-      return Object.assign(state.provinceMap, {'00': '全国'});
+      return Object.assign(state.provinceMap, {'0': '全国'});
     }
   }
 };

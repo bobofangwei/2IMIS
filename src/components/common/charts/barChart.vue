@@ -5,6 +5,7 @@
 var echarts = require('echarts/lib/echarts');
 require('echarts/lib/chart/bar');
 require('echarts/theme/macarons');
+import { mapGetters } from 'vuex';
 export default {
   props: {
     height: {
@@ -24,34 +25,6 @@ export default {
   },
   mounted: function() {
     this.initChart();
-    this.chart.showLoading();
-    // 模拟从后台异步获取数据的过程
-    setTimeout(() => {
-      this.chartData = this.generateData();
-      console.log('chartData', this.chartData);
-    }, 1000);
-  },
-  watch: {
-    chartData: function() {
-      if (this.chartData.length > 0) {
-        if (this.chart) {
-          this.chart.hideLoading();
-          this.chart.setOption({
-            series: [{
-                type: 'bar',
-                name: '总用户数',
-                data: this.chartData[0]
-              },
-              {
-                type: 'bar',
-                name: '新增用户',
-                data: this.chartData[1]
-              }
-            ]
-          });
-        }
-      }
-    }
   },
   beforeDestroy: function() {
     if (!this.chart) {
@@ -63,54 +36,59 @@ export default {
   methods: {
     initChart: function() {
       this.chart = echarts.init(this.$el, 'macarons');
-      this.chart.setOption({
-        // title: {
-        //   text: 'Top产品市场份额',
-        //   x: 'center'
-        // },
-        legend: {
-         x: 'center',
-         y: 'bottom',
-         data: ['总用户数', '新增用户']
-        },
-        tooltip: {
-          trigger: 'axis',
-          axisPointer: {
-            type: 'shadow',
-            label: {
-              show: true
+    },
+    update(initProvice) {
+      this.dealWithData(initProvice);
+      this.render();
+    },
+    dealWithData: function(province) {
+      this.xAxisData = [];
+      this.valueData = [];
+      for (var provinceCode in this.provinces) {
+        let provinceText = this.provinces[provinceCode];
+        this.xAxisData.push(provinceText);
+        this.valueData.push({ name: provinceText, value: Math.round(Math.random() * 1000) });
+      }
+    },
+    render: function() {
+      this.$nextTick(function() {
+        var option = {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow',
+              label: {
+                show: true
+              }
             }
-          }
-        },
-        xAxis: [{
-          type: 'category',
-          data: this.generatexAxisData()
-        }],
-        yAxis: [{
-          type: 'value'
-        }],
-        series: []
+          },
+          xAxis: [{
+            type: 'category',
+            data: this.xAxisData,
+            boundaryGap: true,
+            axisLabel: {
+              interval: 0
+            }
+          }],
+          yAxis: [{
+            type: 'value'
+          }],
+          series: [{
+            type: 'bar',
+            data: this.valueData
+          }]
+        };
+        console.log(option);
+        this.chart.setOption(option);
       });
-    },
-    generateData: function() {
-      var result = [];
-      for (var k = 0; k < 2; k++) {
-        result[k] = [];
-        for (var i = 1; i < 25; i++) {
-          result[k].push({ name: '卡' + i, value: Math.random() * 1000 + 9000 });
-        }
-      }
-      return result;
-    },
-    generatexAxisData: function() {
-      var result = [];
-      for (var i = 1; i < 25; i++) {
-        result.push('卡' + i);
-      }
-      return result;
     }
+  },
+  computed: {
+    ...mapGetters({
+      'provinces': 'provinceMap'
+    })
   }
-}
+};
 
 </script>
 <style lang="scss" scoped>

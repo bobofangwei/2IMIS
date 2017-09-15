@@ -7,6 +7,7 @@ const productDayForm = (resolve) => require(['../components/pages/productDayForm
 const provinceDayForm = (resolve) => require(['../components/pages/provinceDayForm/provinceDayForm.vue'], resolve);
 const productMonthForm = (resolve) => require(['../components/pages/productMonthForm/productMonthForm.vue'], resolve);
 const provinceMonthForm = (resolve) => require(['../components/pages/provinceMonthForm/provinceMonthForm.vue'], resolve);
+const personCenter = (resolve) => require(['../components/pages/personCenter/personCenter.vue'], resolve);
 const userManage = (resolve) => require(['../components/pages/userManage/userManage.vue'], resolve);
 // 测试用
 const dashboard = (resolve) => require(['../components/pages/dashboard/dashboard.vue'], resolve);
@@ -16,35 +17,24 @@ Vue.use(Router)
 export const constantRouterMap = [{
   path: '/login',
   component: login,
-  hidden: true,
   name: 'login',
   meta: {
     hidden: true
   }
 }, {
-  path: '/',
-  component: home,
-  redirect: '/dayForm/productDayForm',
-  name: 'home',
-  hidden: true,
+  path: '/test',
+  component: dashboard,
+  name: 'test',
   meta: {
     hidden: true
-  },
-  children: [{
-    path: 'test',
-    component: dashboard,
-    name: 'test',
-    meta: {
-      hidden: true
-    }
-  }]
+  }
 }];
 
 export const asyncRouterMap = [{
   path: '/dayForm',
   component: home,
   redirect: '/dayForm/productDayForm',
-  name: 'dayForm',  
+  name: 'dayForm',
   meta: {
     title: '日报表',
     icon: 'el-icon-date',
@@ -109,12 +99,11 @@ export const asyncRouterMap = [{
     }
   }]
 }, {
-  path: '/manage',
+  path: '/',
   component: home,
-  name: 'manage',
-  redirect: '/manage/userManage',
+  name: 'root',
+  redirect: '/dayForm/productDayForm',
   meta: {
-    title: '设置',
     icon: 'el-icon-star-on',
     dropdown: false
   },
@@ -124,7 +113,16 @@ export const asyncRouterMap = [{
     name: 'userManage',
     meta: {
       role: ['admin'],
-      title: '用户管理'
+      title: '用户管理',
+      icon: 'el-icon-star-off'
+    }
+  }, {
+    path: 'personCenter',
+    component: personCenter,
+    name: 'personCenter',
+    meta: {
+      title: '个人中心',
+      icon: 'el-icon-information'
     }
   }]
 }, {

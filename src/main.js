@@ -19,7 +19,7 @@ Vue.use(ElementUi);
 /* eslint-disable no-new */
 
 // 无需登录即可访问的页面
-const whiteList = ['/login', '/manage/userManage'];
+const whiteList = ['/login', '/test'];
 router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
@@ -28,8 +28,7 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/'
       });
-    } else
-    if (store.getters.roles.length === 0) {
+    } else if (store.getters.roles.length === 0) {
       store.dispatch('getUserInfo').then(res => {
         const roles = res.roles;
         store.dispatch('generateRouters', roles).then(() => {
@@ -42,11 +41,13 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    // cookie中没有存储用户信息
+    // cookie中没有存储用户信息 
     if (whiteList.indexOf(to.path) >= 0) {
+      console.log('to.path', to.path);
       next();
     } else {
       // 如果不使用白名单判断的话，就一直死循环了
+      // console.log('login');
       next({
         path: '/login'
       });

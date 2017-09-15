@@ -26,12 +26,13 @@ function filterAsyncRouter(asyncRouterMap, roles) {
   const accessRouters = asyncRouterMap.filter((route) => {
     if (hasPermission(roles, route)) {
       if (route.children && route.children.length) {
-        accessRouters.children = filterAsyncRouter(route.children, roles);
+        route.children = filterAsyncRouter(route.children, roles);
       }
       return true;
     }
     return false;
   });
+  console.log('当前用户可访问异步路由', accessRouters);
   return accessRouters;
 }
 const permission = {
