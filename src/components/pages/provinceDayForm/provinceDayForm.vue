@@ -6,7 +6,9 @@
         <el-form label-position="left" ref="form" :model="queryFormData" label-width="150px" :inline="true" :rules="queryFormRules">
           <el-form-item prop="selectedProduct">
             <el-select v-model="queryFormData.selectedProduct" placeholder="请选择产品">
-              <el-option v-for="(product,code) in productMap" :key="code" :value="code" :label="product"></el-option>
+            <template v-for="item in productMap">
+              <el-option v-for="(value,key) in item" :key="key" :value="key" :label="value"></el-option>
+              </template>
             </el-select>
           </el-form-item>
           <el-form-item prop="selectedDate">
@@ -19,7 +21,7 @@
         </el-form>
       </div>
       <div class="data-form-wrapper">
-        <el-table show-summary :data="productData" border :empty-text="tableMsg" style="width: 100%" :height="610" v-loading="isLoading" element-loading-text="拼命查询中...">
+        <el-table :data="productData" border :empty-text="tableMsg" style="width: 100%" :height="610" v-loading="isLoading" element-loading-text="拼命查询中...">
           <el-table-column v-for="item in tableHeaderData" :prop="item.prop" :label="item.label">
           </el-table-column>
         </el-table>
@@ -32,6 +34,7 @@ import breadbar from '@/components/common/breadbar/breadbar.vue';
 import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
 import { mapGetters } from 'vuex';
 import { queryDayformByProduct } from '@/api/dayForm.js';
+import { formatDate } from '@/common/js/util.js';
 
 export default {
   data: function() {
@@ -85,27 +88,22 @@ export default {
   methods: {
     queryByProvince: function() {
       this.$refs['form'].validate((valid) => {
-        console.log('valid', valid);
         if (!valid) {
           return;
         }
         this.isLoading = true;
-        queryDayformByProduct(this.queryFormData.selectedProduct, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
+        queryDayformByProduct(this.queryFormData.selectedProduct, formatDate(this.queryFormData.selectedDate, 'yyyy-MM-dd')).then((res) => {
           this.isLoading = false;
-          this.productData = this.analyzeProvince(res);
+          if (res.length === 0) {
+            this.tableMsg = '暂无数据';
+          }
+          this.productData = res;
         }).catch((err) => {
           this.isLoading = false;
           this.tableMsg = '服务器汇报了一个错误，程序员正在紧急处理中...';
           console.log(err);
         })
       });
-    },
-    analyzeProvince: function(res) {
-      let result = res.map((item) => {
-        item.province_name = this.provinceMap[item.province_code] ? this.provinceMap[item.province_code] : '未知省份';
-        return item;
-      });
-      return result;
     }
   },
   components: {

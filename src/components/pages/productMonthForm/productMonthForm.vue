@@ -6,7 +6,9 @@
         <el-form ref="form" label-position="left" :model="queryFormData" label-width="100px" :inline="true" :rules="queryFormRules">
           <el-form-item prop="selectedProvince" required>
             <el-select v-model="queryFormData.selectedProvince" placeholder="请选择地域">
-              <el-option v-for="(province,code) in provinceMap" :key="code" :value="code" :label="province"></el-option>
+            <template v-for="item in provinceMap">
+              <el-option v-for="(value,key) in item" :key="key" :value="key" :label="value"></el-option>
+            </template>
             </el-select>
           </el-form-item>
           <el-form-item prop="selectedDate" required>
@@ -31,6 +33,7 @@ import breadbar from '@/components/common/breadbar/breadbar.vue';
 import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
 import { queryMonthformByProvince } from '@/api/monthForm.js';
 import { mapGetters } from 'vuex';
+import { formatDate } from '@/common/js/util.js';
 
 export default {
   data: function() {
@@ -92,10 +95,13 @@ export default {
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.isLoading = true;
-          queryMonthformByProvince(this.queryFormData.selectedProvince, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
+          queryMonthformByProvince(this.queryFormData.selectedProvince, formatDate(this.queryFormData.selectedDate, 'yyyy-MM-dd')).then((res) => {
             // console.log(res);
             this.isLoading = false;
-            this.productData = this.dealQueryResult(res);
+            if (res.length === 0) {
+                this.tableMsg = '暂无数据';
+            }
+            this.productData = res;
           }).catch((err) => {
             this.isLoading = false;
             this.tableMsg = '服务器汇报了一个错误，工程师正在紧急处理中...';
@@ -103,25 +109,10 @@ export default {
           })
         }
       });
-    },
-    // 寻找卡ID和卡名称的对应关系
-    dealQueryResult: function(res) {
-      let result = res.map((item) => {
-        if (!this.productMap[item.product_id]) {
-          return null;
-        } else {
-          item.product_name = this.productMap[item.product_id];
-          return item;
-        }
-      }).filter((item) => {
-        return item !== null;
-      });
-      return result;
     }
   },
   computed: {
     ...mapGetters([
-      'productMap',
       'provinceMap'
     ])
   }

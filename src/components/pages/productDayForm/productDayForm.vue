@@ -6,7 +6,9 @@
         <el-form ref="form" label-position="left" :model="queryFormData" label-width="100px" :inline="true" :rules="queryFormRules">
           <el-form-item prop="selectedProvince" required>
             <el-select v-model="queryFormData.selectedProvince" placeholder="请选择地域">
-              <el-option v-for="(province,code) in provinces" :key="code" :value="code" :label="province"></el-option>
+            <template v-for="item in provinces">
+              <el-option v-for="(value,key) in item" :key="key" :value="key" :label="value"></el-option>
+              </template>
             </el-select>
           </el-form-item>
           <el-form-item prop="selectedDate" required>
@@ -31,6 +33,7 @@ import breadbar from '@/components/common/breadbar/breadbar.vue';
 import downloadBtn from '@/components/common/downloadBtn/downloadBtn.vue';
 import { queryDayformByProvince } from '@/api/dayForm.js';
 import { mapGetters } from 'vuex';
+import { formatDate } from '@/common/js/util.js';
 
 export default {
   data: function() {
@@ -88,13 +91,19 @@ export default {
   },
   methods: {
     queryByProvince: function() {
+        console.log('省分映射', this.provinces);
       // 校验是否进行了地域和日期选择
       this.$refs['form'].validate((valid) => {
         if (valid) {
           this.isLoading = true;
-          queryDayformByProvince(this.queryFormData.selectedProvince, this.queryFormData.selectedDate.toLocaleString()).then((res) => {
+          // console.log('日期对象', formatDate(this.queryFormData.selectedDate, 'yyyy-MM-dd'));
+          queryDayformByProvince(this.queryFormData.selectedProvince, formatDate(this.queryFormData.selectedDate, 'yyyy-MM-dd')).then((res) => {
             // console.log(res);
-            this.productData = this.dealQueryResult(res);
+            // this.productData = this.dealQueryResult(res);
+            if (res.length === 0) {
+                this.tableMsg = '暂无数据';
+            }
+            this.productData = res;
             this.isLoading = false;
             // console.log('productData', this.productData);
           }).catch((err) => {
@@ -122,8 +131,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      'productMap': 'productMap',
-      'provinces': 'provinceMapWithQuanguo'
+      'provinces': 'provinceMap'
     })
   }
 };

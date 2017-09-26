@@ -4,24 +4,17 @@
     <div class="query-form">
       <el-form ref="form" label-width="80px" v-model="querys">
         <div class="form-item">
-          <el-radio-group v-model="selectedDuration" size="small" @change="handleChangeDuration">
-            <el-radio-button v-for="(value,key) in durations" :key="key" :label="key">{{value}}</el-radio-button>
-          </el-radio-group>
-        </div>
-        <div class="form-item bottom-line">
           <label>产品：</label>
           <el-select v-model="querys.selectedProduct" style="margin-right: 50px">
             <el-option label="所有产品" value="0"></el-option>
             <el-option label="腾讯王卡" value="1"></el-option>
           </el-select>
+          <el-button type="primary" @click="handleQuery">查询</el-button>
           <!-- <label>省分：</label>
           <el-select v-model="querys.selectedProvince">
             <el-option label="全国" value="0"></el-option>
             <el-option label="北京" value="1"></el-option>
           </el-select>-->
-        </div>
-        <div class="form-item">
-          <el-button type="primary" @click="handleQuery">查询</el-button>
         </div>
       </el-form>
     </div>
@@ -31,12 +24,13 @@
       <p class="desc-content">昨日新增:<span class="num">{{yesAdd}}</span>,昨日流失<span class="num">{{yesMinus}}</span></p>
     </div>
     <div class="chart-wrapper">
-      <h3 class="chart-title">用户数统计</h3>
-      <el-form>
-        <el-radio-group v-model="selectedLineType" @change="handleChangeLineType" tyle="margin-left: 30px" size="small" fill="#D8EBFF" text-color="#2578DF">
-          <el-radio-button v-for="(value,key) in lineTypes" :key="key" :label="key">{{value}}</el-radio-button>
-        </el-radio-group>
-      </el-form>
+     <el-tabs v-model="selectedLineType" @tab-click="handleChangeLineType">
+       <el-tab-pane v-for="(value,key) in lineTypes" :label="value" :key="key" :name="key"></el-tab-pane>
+    </el-tabs>
+     <!-- <h3 class="chart-title">用户数统计</h3>-->
+        <el-radio-group v-model="selectedDuration" size="small" @change="handleChangeDuration" fill="#D8EBFF" text-color="#2578DF">
+            <el-radio-button v-for="(value,key) in durations" :key="key" :label="key">{{value}}</el-radio-button>
+          </el-radio-group>
       <div>
         <line-chart class="chart" ref="lineChart"></line-chart>
       </div>
@@ -70,8 +64,8 @@ export default {
         '30days': '近三十天'
       },
       lineTypes: {
-        'changeUser': '用户变化',
-        'allUser': '用户总数'
+        'changeUser': '用户变化趋势统计',
+        'allUser': '用户总数统计'
       },
       pieTypes: {
         'age': '年龄',
@@ -115,10 +109,10 @@ export default {
       // 切换折线图显示时长
       this.$refs.lineChart.updateLineDuration(duration);
     },
-    handleChangeLineType: function(lineType) {
-      console.log('lineType', lineType);
+    handleChangeLineType: function(tab) {
+      console.log('lineType', tab.name);
       // 切换折线图显示类型，是显示用户总数，还是显示用户新增/流失
-      this.$refs.lineChart.updateLineType(lineType);
+      this.$refs.lineChart.updateLineType(tab.name);
     },
     handleChangePieType: function(pieType) {
       // 切换饼图显示类型，是显示用户性别分布，还是显示用户年龄分布
@@ -201,8 +195,10 @@ export default {
       font-size: 14px;
     }
   }
+  .dur-rg-wrapper {
+    margin-top: 15px;
+  }
   .chart-wrapper {
-    border-top: 1px solid #EAEBED;
     border-bottom: 1px solid #EAEBED;
     margin-top: 25px;
     .chart-title {
