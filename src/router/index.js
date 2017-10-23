@@ -12,25 +12,45 @@ const userManage = (resolve) => require(['../components/pages/userManage/userMan
 // 测试用
 const dashboard = (resolve) => require(['../components/pages/dashboard/dashboard.vue'], resolve);
 const errorPage = (resolve) => require(['../components/pages/404/404.vue'], resolve);
+const passwordReset = (resolve) => require(['../components/pages/passwordReset/passwordReset.vue'], resolve);
 Vue.use(Router)
 
 export const constantRouterMap = [{
-  path: '/login',
-  component: login,
-  name: 'login',
-  meta: {
-    hidden: true
+    path: '/login',
+    component: login,
+    name: 'login',
+    meta: {
+      hidden: true
+    }
+  },
+  {
+    path: '/resetPassword',
+    component: passwordReset,
+    name: 'resetPassword',
+    meta: {
+      hidden: true
+    }
   }
-}, {
-  path: '/test',
-  component: dashboard,
-  name: 'test',
-  meta: {
-    hidden: true
-  }
-}];
+];
 
 export const asyncRouterMap = [{
+  path: '/',
+  component: home,
+  name: 'root',
+  redirect: '/static',
+  meta: {
+    dropdown: false
+  },
+  children: [{
+    path: 'static',
+    component: dashboard,
+    name: 'dashboard',
+    meta: {
+      title: '数据统计',
+      icon: 'el-icon-edit'
+    }
+  }]
+}, {
   path: '/dayForm',
   component: home,
   redirect: '/dayForm/productDayForm',
@@ -102,7 +122,7 @@ export const asyncRouterMap = [{
   path: '/',
   component: home,
   name: 'root',
-  redirect: '/dayForm/productDayForm',
+  redirect: '/static',
   meta: {
     icon: 'el-icon-star-on',
     dropdown: false

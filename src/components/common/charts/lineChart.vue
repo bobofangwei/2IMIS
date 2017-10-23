@@ -83,6 +83,12 @@ export default {
       this.lineType = type;
       this.render();
     },
+    showLoading: function() {
+        this.chart.showLoading();
+    },
+    hideLoading: function() {
+        this.chart.hideLoading();
+    },
     // 更改图形显示时长，是显示近7天，还是15天，还是30天
     updateLineDuration: function(duration) {
       this.lineDuration = duration;
@@ -90,8 +96,8 @@ export default {
     },
     // 只有data改变的时候，才需要调用此函数
     // 如果仅仅是显示时间之间的切换，或者是用户变化和用户总数之间的切换，不需要调用此函数
-    update: function(userAll, userAdd, userMinus) {
-      this.dealWithData(userAll, userAdd, userMinus);
+    update: function(lineData) {
+      this.dealWithData(lineData);
       this.render();
     },
     render: function() {
@@ -148,18 +154,17 @@ export default {
         // console.log('options', this.chart.getOption());
       });
     },
-    dealWithData: function(userAll, userAdd, userMinus) {
+    dealWithData: function(lineData) {
       this.xAxisData = [];
       this.userAllData = [];
       this.userAddData = [];
       this.userMinusData = [];
-      for (var i = 0, len = userAll.length; i < len; i++) {
-        for (var key in userAll[i]) {
-          this.xAxisData.push(key);
-          this.userAllData.push(userAll[i][key]);
-          this.userAddData.push(userAdd[i][key]);
-          this.userMinusData.push(userMinus[i][key]);
-        }
+      for (let i = 0, len = Math.min(lineData.length, 30); i < len; i++) {
+        let curData = lineData[i];
+        this.xAxisData.push(curData['date_stamp']);
+        this.userAllData.push(curData['sum_user']);
+        this.userAddData.push(curData['yes_add']);
+        this.userMinusData.push(curData['yes_xiaohu']);
       }
     }
   }

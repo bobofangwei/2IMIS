@@ -1,53 +1,53 @@
 <template>
-  <div class="user-manage">
-    <div class="main-wrapper">
-      <breadbar></breadbar>
-      <div class="form-wrapper">
-        <el-button type="primary" @click="handleAdd" class="ope-btn">新增用户</el-button>
-        <el-button type="warning" @click="handleBatchDelete" class="ope-btn">批量删除</el-button>
-        <el-table ref="userTable" border :data="userList" @selection-change="handleSelect">
-          >
-          <el-table-column type="selection" width="55"></el-table-column>
-          <el-table-column label="用户名" prop="username"></el-table-column>
-          <el-table-column label="姓名" prop="name"></el-table-column>
-          <el-table-column label="公司" prop="company"></el-table-column>
-          <el-table-column label="部门" prop="apartment"></el-table-column>
-          <el-table-column label="角色" prop="roleName"></el-table-column>
-          <el-table-column label="操作">
-            <template scope="scope">
+<div class="user-manage">
+  <div class="main-wrapper">
+    <breadbar></breadbar>
+    <div class="form-wrapper">
+      <el-button type="primary" @click="handleAdd" class="ope-btn">新增用户</el-button>
+      <el-button type="warning" @click="handleBatchDelete" class="ope-btn">批量删除</el-button>
+      <el-table ref="userTable" border :data="userList" @selection-change="handleSelect">
+        >
+        <el-table-column type="selection" width="55"></el-table-column>
+        <el-table-column label="用户名" prop="username"></el-table-column>
+        <el-table-column label="姓名" prop="name"></el-table-column>
+        <el-table-column label="公司" prop="company"></el-table-column>
+        <el-table-column label="部门" prop="apartment"></el-table-column>
+        <el-table-column label="角色" prop="roleName"></el-table-column>
+        <el-table-column label="操作">
+          <template scope="scope">
               <el-button size="small" @click="handleEdit(scope)">编辑</el-button>
               <el-button size="small" type="danger" @click="handleDelete(scope)">删除</el-button>
             </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <el-dialog title="编辑用户信息" :visible.sync="dialogVisible" label-width="100px">
-        <el-form ref="userForm" :model="curUser" label-width="80px" :rules="userRules">
-          <el-form-item label="用户名" prop="username">
-            <el-input v-model="curUser.username" :disabled="usernameDisabled"></el-input>
-          </el-form-item>
-          <el-form-item label="姓名" prop="name">
-            <el-input v-model="curUser.name"></el-input>
-          </el-form-item>
-          <el-form-item label="公司" prop="company">
-            <el-input v-model="curUser.company"></el-input>
-          </el-form-item>
-          <el-form-item label="部门" prop="apartment">
-            <el-input v-model="curUser.apartment"></el-input>
-          </el-form-item>
-          <el-form-item label="角色" prop="role">
-            <el-select v-model="curUser.role" placeholder="请选择用户角色">
-              <el-option v-for="(role, key) in roleMap" :label="role" :value="key"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-button type="primary" @click="handleCertain">确定</el-button>
-            <el-button @click="closeDialog">取消</el-button>
-          </el-form-item>
-        </el-form>
-      </el-dialog>
+        </el-table-column>
+      </el-table>
     </div>
+    <el-dialog title="编辑用户信息" :visible.sync="dialogVisible" label-width="100px">
+      <el-form ref="userForm" :model="curUser" label-width="80px" :rules="userRules">
+        <el-form-item label="用户名" prop="username">
+          <el-input v-model="curUser.username" :disabled="usernameDisabled"></el-input>
+        </el-form-item>
+        <el-form-item label="姓名" prop="name">
+          <el-input v-model="curUser.name"></el-input>
+        </el-form-item>
+        <el-form-item label="公司" prop="company">
+          <el-input v-model="curUser.company"></el-input>
+        </el-form-item>
+        <el-form-item label="部门" prop="apartment">
+          <el-input v-model="curUser.apartment"></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop="role">
+          <el-select v-model="curUser.role" placeholder="请选择用户角色">
+            <el-option v-for="(role, key) in roleMap" :label="role" :value="key"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="handleCertain">确定</el-button>
+          <el-button @click="closeDialog">取消</el-button>
+        </el-form-item>
+      </el-form>
+    </el-dialog>
   </div>
+</div>
 </template>
 <script type="text/javascript">
 import breadbar from '@/components/common/breadbar/breadbar.vue';
@@ -77,8 +77,15 @@ export default {
       }],
       multipleSelection: [],
       userRules: {
-        username: [{ required: true, message: '请输入用户名' }],
-        role: [{ required: true, message: '请选择用户角色', trigger: 'change' }]
+        username: [{
+          required: true,
+          message: '请输入用户名'
+        }],
+        role: [{
+          required: true,
+          message: '请选择用户角色',
+          trigger: 'change'
+        }]
       }
     };
   },
@@ -109,7 +116,9 @@ export default {
         this.$refs.userForm.resetFields();
       }
       // 坑2：因为有下拉菜单，role这个属性必须存在，否则下拉菜单不能选择
-      this.curUser = { role: '' };
+      this.curUser = {
+        role: ''
+      };
       this.dialogType = 'add';
       this.openDialog();
     },
@@ -117,6 +126,7 @@ export default {
     handleDelete: function(scope) {
       // console.log(scope);
       // 删除用户
+      console.log('delete', [this.userList[scope.$index].username]);
       this.userList.splice(scope.$index, 1);
       // 发送post请求服务器端删除
     },
@@ -125,6 +135,10 @@ export default {
       this.userList = this.userList.filter((item) => {
         return this.multipleSelection.indexOf(item) <= -1;
       });
+      var reqData = this.multipleSelection.map((item) => {
+        return item.username;
+      });
+      console.log('batchDelete', reqData);
       // 发送post请求服务器端删除（需要再请求一遍接口吗）
     },
     openDialog: function() {
@@ -143,6 +157,7 @@ export default {
         // 因此新增的对象必须是当前curUser的复制版本
         // 否则，curUser深层属性的再次更改会导致出现意向不到的结果
         let user = Object.assign({}, this.curUser);
+        console.log(this.dialogType, JSON.stringify(user));
         user.roleName = this.roleMap[user.role];
         if (this.dialogType === 'add') {
           this.userList.unshift(user);
@@ -161,17 +176,15 @@ export default {
     }
   }
 };
-
 </script>
 <style lang="scss" scope>
 .user-manage {
-  .main-wrapper {
-    width: 90%;
-    margin: 20px auto;
-  }
-  .ope-btn {
-    margin: 10px 20px 15px 0;
-  }
+    .main-wrapper {
+        width: 90%;
+        margin: 20px auto;
+    }
+    .ope-btn {
+        margin: 10px 20px 15px 0;
+    }
 }
-
 </style>

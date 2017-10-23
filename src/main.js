@@ -19,7 +19,7 @@ Vue.use(ElementUi);
 /* eslint-disable no-new */
 
 // 无需登录即可访问的页面
-const whiteList = ['/login', '/test'];
+const whiteList = ['/login', '/resetPassword'];
 // 需要省分列表的页面
 const provincePages = ['/dayForm/productDayForm', '/monthForm/productMonthForm'];
 // 需要产品列表的页面
@@ -29,27 +29,14 @@ router.beforeEach((to, from, next) => {
   NProgress.start();
   if (getToken()) {
     // debugger
-    console.log('getToken');
+    console.log('getToken', to.path);
+    // debugger
     if (to.path === '/login') {
       // 调用 next('/')或者next({path: ''}),跳转到一个不同的地址，当前的导航被终止，然后进行一个新的导航
       next({
         path: '/'
       });
     }
-    // 如果用户角色为空，获取用户角色，并根据用户角色动态生成侧边栏
-    // if (store.getters.roles.length === 0) {
-    //   store.dispatch('getUserInfo').then(res => {
-    //     const roles = res.roles;
-    //     return store.dispatch('generateRouters', roles).then(() => {
-    //       router.addRoutes(store.getters.addRouters);
-    //       next({ ...to
-    //       });
-    //     });
-    //   });
-    // } else {
-    //   next();
-    // }
-
     var promises = [];
     // 如果用户角色为空，获取用户角色，并根据用户角色动态生成侧边栏
     if (store.getters.roles.length === 0) {
@@ -70,8 +57,8 @@ router.beforeEach((to, from, next) => {
     if (store.getters.productMap.length === 0) {
       let promise = store.dispatch('provinceMapAsycn');
       promises.push(promise);
-    } 
-    
+    }
+
     // 哪怕以上的判断都不成立，也就是说所有的信息：侧边栏，省分列表，产品列表都不为空，则Promises为空，promise.all立即触发
     if (promises.length) {
       Promise.all(promises).then((values) => {
@@ -82,7 +69,7 @@ router.beforeEach((to, from, next) => {
       next();
     }
   } else {
-    // cookie中没有存储用户信息 
+    // cookie中没有存储用户信息
     // 白名单中存储着无需登录即可访问的信息
     if (whiteList.indexOf(to.path) >= 0) {
       console.log('to.path', to.path);

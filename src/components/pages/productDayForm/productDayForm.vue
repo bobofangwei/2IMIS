@@ -21,7 +21,7 @@
         </el-form>
       </div>
       <div class="data-form-wrapper">
-        <el-table :empty-text="tableMsg" show-summary :header="tableHeaderData" :data="productData" border style="width: 100%" :height="610" v-loading="isLoading" element-loading-text="拼命查询中...">
+        <el-table :empty-text="tableMsg" :header="tableHeaderData" :data="productData" border style="width: 100%" :height="610" v-loading="isLoading" element-loading-text="拼命查询中...">
           <el-table-column v-for="item in tableHeaderData" :prop="item.prop" :label="item.label"></el-table-column>
         </el-table>
       </div>

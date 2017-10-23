@@ -5,7 +5,6 @@
 var echarts = require('echarts/lib/echarts');
 require('echarts/lib/chart/bar');
 require('echarts/theme/macarons');
-import { mapGetters } from 'vuex';
 export default {
   props: {
     height: {
@@ -37,18 +36,25 @@ export default {
     initChart: function() {
       this.chart = echarts.init(this.$el, 'macarons');
     },
-    update(initProvice) {
-      this.dealWithData(initProvice);
+    update(barData) {
+      this.dealWithData(barData);
       this.render();
     },
-    dealWithData: function(province) {
+    dealWithData: function(barData) {
       this.xAxisData = [];
       this.valueData = [];
-      for (var provinceCode in this.provinces) {
-        let provinceText = this.provinces[provinceCode];
+      for (let i = 0, len = barData.length; i < len; i++) {
+        let curData = barData[i];
+        let provinceText = curData['province_name'];
         this.xAxisData.push(provinceText);
-        this.valueData.push({ name: provinceText, value: Math.round(Math.random() * 1000) });
+        this.valueData.push({ name: provinceText, value: curData['sum_user'] });
       }
+    },
+    showLoading: function() {
+        this.chart.showLoading();
+    },
+    hideLoading: function() {
+        this.chart.hideLoading();
     },
     render: function() {
       this.$nextTick(function() {
@@ -78,15 +84,10 @@ export default {
             data: this.valueData
           }]
         };
-        console.log(option);
+        // console.log(option);
         this.chart.setOption(option);
       });
     }
-  },
-  computed: {
-    ...mapGetters({
-      'provinces': 'provinceMap'
-    })
   }
 };
 
