@@ -10,12 +10,22 @@ import axios from 'axios'
 import store from './store/index.js';
 import NProgress from 'nprogress';
 import 'nprogress/nprogress.css';
+import * as filters from './filters/index.js';
+// 引入阿里的图标库
+import './assets/iconfont/iconfont.css';
 import {
   getToken
 } from '@/util/auth.js';
 
 Vue.config.productionTip = false
+// Vue.use使用插件
+// Vue.component注册全局插件
+// Vue.filter注册全局过滤器
 Vue.use(ElementUi);
+// 注册时间文本格式处理相关的过滤器
+Object.keys(filters).forEach((key) => {
+  Vue.filter(key, filters[key]);
+});
 /* eslint-disable no-new */
 
 // 无需登录即可访问的页面
@@ -36,7 +46,9 @@ router.beforeEach((to, from, next) => {
       next({
         path: '/'
       });
+      return;
     }
+    // 如果保存有用户信息，要求跳转到非登录页
     var promises = [];
     // 如果用户角色为空，获取用户角色，并根据用户角色动态生成侧边栏
     if (store.getters.roles.length === 0) {
@@ -49,21 +61,23 @@ router.beforeEach((to, from, next) => {
       promises.push(promise);
     }
     // 如果产品列表长度为空，获取产品列表
-    if (store.getters.productMap.length === 0) {
-      let promise = store.dispatch('productMapAsync');
-      promises.push(promise);
-    }
+    // if (store.getters.productMap.length === 0) {
+    //   let promise = store.dispatch('productMapAsync');
+    //   promises.push(promise);
+    // }
     // 说明省分列表长度为空，获取省分列表
-    if (store.getters.productMap.length === 0) {
-      let promise = store.dispatch('provinceMapAsycn');
-      promises.push(promise);
-    }
-
-    // 哪怕以上的判断都不成立，也就是说所有的信息：侧边栏，省分列表，产品列表都不为空，则Promises为空，promise.all立即触发
+    // if (store.getters.provinceMap.length === 0) {
+    //   let promise = store.dispatch('provinceMapAsycn');
+    //   promises.push(promise);
+    // }
+    //
+    // // 哪怕以上的判断都不成立，也就是说所有的信息：侧边栏，省分列表，产品列表都不为空，则Promises为空，promise.all立即触发
     if (promises.length) {
       Promise.all(promises).then((values) => {
         // 重新发起导航
-        next({ ...to });
+        // 路由重新add之后，可能导致next（）不可用，使用next({...to})可以解决这个问题
+        next({ ...to
+        });
       });
     } else {
       next();

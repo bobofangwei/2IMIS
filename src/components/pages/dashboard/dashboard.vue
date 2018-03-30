@@ -96,7 +96,7 @@ export default {
   },
   mounted: function() {
     // 进入页面默认进行一次查询，此时的querys.selectedProduct为00，即默认所有产品
-    this.handleQuery();
+    // this.handleQuery();
   },
   methods: {
     handleQuery: function() {
@@ -110,7 +110,7 @@ export default {
             let lastIndex = lineData.length - 1;
             this.yesSum = lineData[lastIndex]['sum_user'];
             this.yesAdd = lineData[lastIndex]['yes_add'];
-            this.yesMinus = lineData[lastIndex]['yes_xiaohu'];            
+            this.yesMinus = lineData[lastIndex]['yes_xiaohu'];
         }
         this.$nextTick(function() {
           this.$refs.lineChart.update(lineData);

@@ -1,7 +1,9 @@
 import axios from '@/util/axiosService.js';
 
 export function login(username, password) {
-  const loginUrl = 'BaseController/login';
+  // const loginUrl = 'BaseController/login';
+  // 更改到本机测试环境
+  const loginUrl = 'login';
   return axios.post(loginUrl, {
     username,
     password
@@ -9,14 +11,16 @@ export function login(username, password) {
   // return rawAxios.post(loginUrl, qs.stringify({ username, password }), { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } });
 };
 export function getUserInfo() {
-  const getInfoUrl = 'BaseController/getUserInfo';
+  // const getInfoUrl = 'BaseController/getUserInfo';
+  const getInfoUrl = 'getUserInfo';
   return axios.request({
     url: getInfoUrl,
     method: 'GET'
   });
 };
 export function logout(token) {
-  const logoutUrl = 'BaseController/logout';
+  // const logoutUrl = 'BaseController/logout';
+  const logoutUrl = 'logout';
   return axios.get(logoutUrl);
 };
 // 理论上需要后台生成返回，这里先前台随机生成一个吧

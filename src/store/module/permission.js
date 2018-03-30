@@ -16,6 +16,7 @@ function hasPermission(roles, route) {
       route.meta.role.indexOf(role) > -1
     });
   } else {
+    // meta中不设置role字段，说明任何人都可以登录
     return true;
   }
 }

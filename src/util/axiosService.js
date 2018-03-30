@@ -1,7 +1,11 @@
 import axios from 'axios';
 import config from './config.js';
-import { Message } from 'element-ui';
-import { getToken } from './auth.js';
+import {
+  Message
+} from 'element-ui';
+import {
+  getToken
+} from './auth.js';
 import store from '@/store/index.js';
 
 const axiosService = axios.create(config);
@@ -23,7 +27,8 @@ axiosService.interceptors.response.use((res) => {
       message: res.data.msg,
       type: 'error'
     });
-    return Promise.reject('axios拦截 status!=0');
+    // 其他类型的错误，直接reject
+    return Promise.reject(res.data);
   } else {
     return res.data.res;
   }

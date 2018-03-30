@@ -13,6 +13,8 @@ const userManage = (resolve) => require(['../components/pages/userManage/userMan
 const dashboard = (resolve) => require(['../components/pages/dashboard/dashboard.vue'], resolve);
 const errorPage = (resolve) => require(['../components/pages/404/404.vue'], resolve);
 const passwordReset = (resolve) => require(['../components/pages/passwordReset/passwordReset.vue'], resolve);
+const messageTemplate = (resolve) => require(['../components/pages/messageTemplate/messageTemplate.vue'], resolve);
+const messageEdit = (resolve) => require(['../components/pages/messageEdit/messageEdit.vue'], resolve);
 Vue.use(Router)
 
 export const constantRouterMap = [{
@@ -47,7 +49,7 @@ export const asyncRouterMap = [{
     name: 'dashboard',
     meta: {
       title: '数据统计',
-      icon: 'el-icon-edit'
+      icon: 'icon-attendance'
     }
   }]
 }, {
@@ -57,7 +59,7 @@ export const asyncRouterMap = [{
   name: 'dayForm',
   meta: {
     title: '日报表',
-    icon: 'el-icon-date',
+    icon: 'icon-calendar',
     dropdown: true
   },
   children: [{
@@ -82,7 +84,7 @@ export const asyncRouterMap = [{
   name: 'monthForm',
   meta: {
     title: '月报表',
-    icon: 'el-icon-document',
+    icon: 'icon-cangneishicao',
     dropdown: true
   },
   children: [{
@@ -107,7 +109,7 @@ export const asyncRouterMap = [{
   name: 'detail',
   meta: {
     title: '明细',
-    icon: 'el-icon-menu',
+    icon: 'icon-delivery',
     dropdown: true
   },
   children: [{
@@ -116,6 +118,31 @@ export const asyncRouterMap = [{
     name: 'basicInfo',
     meta: {
       title: '基本信息'
+    }
+  }]
+}, {
+  path: '/message',
+  component: home,
+  redirect: '/message/messageTemplate',
+  name: 'message',
+  meta: {
+    title: '短信维系',
+    icon: 'icon-chat',
+    dropdown: true
+  },
+  children: [{
+    path: 'messageTemp',
+    component: messageTemplate,
+    name: 'messageTemplate',
+    meta: {
+      title: '经典模型'
+    }
+  }, {
+    path: 'messageEdit',
+    component: messageEdit,
+    name: 'messageEdit',
+    meta: {
+      title: '新建模型'
     }
   }]
 }, {
@@ -134,7 +161,7 @@ export const asyncRouterMap = [{
     meta: {
       role: ['admin'],
       title: '用户管理',
-      icon: 'el-icon-star-off'
+      icon: 'icon-power'
     }
   }, {
     path: 'personCenter',
@@ -142,7 +169,7 @@ export const asyncRouterMap = [{
     name: 'personCenter',
     meta: {
       title: '个人中心',
-      icon: 'el-icon-information'
+      icon: 'icon-user'
     }
   }]
 }, {
