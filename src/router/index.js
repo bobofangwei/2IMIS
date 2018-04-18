@@ -15,6 +15,7 @@ const errorPage = (resolve) => require(['../components/pages/404/404.vue'], reso
 const passwordReset = (resolve) => require(['../components/pages/passwordReset/passwordReset.vue'], resolve);
 const messageTemplate = (resolve) => require(['../components/pages/messageTemplate/messageTemplate.vue'], resolve);
 const messageEdit = (resolve) => require(['../components/pages/messageEdit/messageEdit.vue'], resolve);
+const messageDetail = (resolve) => require(['../components/pages/messageDetail/messageDetail.vue'], resolve);
 Vue.use(Router)
 
 export const constantRouterMap = [{
@@ -97,7 +98,7 @@ export const asyncRouterMap = [{
   }, {
     path: 'provinceMonthForm',
     component: provinceMonthForm,
-    name: 'productMonthForm',
+    name: 'provinceMonthForm',
     meta: {
       title: '区域月报表'
     }
@@ -136,7 +137,15 @@ export const asyncRouterMap = [{
     name: 'messageTemplate',
     meta: {
       title: '经典模型'
-    }
+    },
+    children: [{
+      path: ':id',
+      component: messageDetail,
+      name: 'messageDetail',
+      meta: {
+        hidden: true
+      }
+    }]
   }, {
     path: 'messageEdit',
     component: messageEdit,

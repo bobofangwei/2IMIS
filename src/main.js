@@ -4,7 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import ElementUi from 'element-ui'
-import 'element-ui/lib/theme-default/index.css'
+import 'element-ui/lib/theme-chalk/index.css'
 import '@/common/scss/index.scss'
 import axios from 'axios'
 import store from './store/index.js';
@@ -16,6 +16,8 @@ import './assets/iconfont/iconfont.css';
 import {
   getToken
 } from '@/util/auth.js';
+// 引入系统所有的mock
+import '@/mock/index.js';
 
 Vue.config.productionTip = false
 // Vue.use使用插件

@@ -31,11 +31,14 @@
         <el-button type="primary" @click="changePassword">提交</el-button>
       </el-form-item>
     </el-form>
+    <h2 class="section-title">意见反馈</h2>
+    <md-editor :height="200" @submit="mdSubmit"></md-editor>
   </div>
 </div>
 </template>
 <script type="text/javascript">
 import breadbar from '@/components/common/breadbar/breadbar.vue';
+import mdEditor from '@/components/common/mdEditor/mdEditor.vue';
 import md5 from 'md5';
 export default {
   data: function() {
@@ -79,6 +82,9 @@ export default {
     };
   },
   methods: {
+    mdSubmit(value) {
+      console.log('markdown编辑器提交的文本', value);
+    },
     changePassword: function() {
       this.$refs['passwordForm'].validate((valid) => {
         if (valid) {
@@ -96,7 +102,8 @@ export default {
     }
   },
   components: {
-    breadbar
+    breadbar,
+    mdEditor
   }
 };
 </script>

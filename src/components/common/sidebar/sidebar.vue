@@ -1,6 +1,6 @@
 <template>
 <div class="sidebar">
-  <el-menu default-active="$route.path" theme="dark" class="el-menu-vertical-demo" unique-opened router>
+  <el-menu default-active="$route.path" background-color="#324057" text-color="#fff" class="el-menu-vertical-demo" unique-opened router>
     <template v-for="item in allRouters">
         <template v-if="!item.meta.hidden && item.meta.dropdown && item.children">
           <el-submenu :index="item.path">
