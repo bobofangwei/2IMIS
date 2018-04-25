@@ -1,8 +1,8 @@
 <template lang="html">
-<div class="intel-model" @mousemove="handleMouseMove($event)" @mousedown="handleMouseDown($event)">
+<div class="intel-model">
   <img src="./logo.png" alt="logo" class="movelogo" ref="logoImg" :style="logoStyle">
   <div class="condition-wrapper">
-    <intel-hold-strategy></intel-hold-strategy>
+    <intel-hold-strategy :selectedTag="selectedTag" @cancelSelectedTag="cancelSelectedTag"></intel-hold-strategy>
   </div>
   <div class="tags-wrapper">
     <!--
@@ -12,8 +12,9 @@
       </div>
     </el-tree>
   -->
-  <intel-hold-tags></intel-hold-tags>
+  <intel-hold-tags @selectTag="selectTag" ref="tagNav"></intel-hold-tags>
   </div>
+  <el-button type="primary" class="saveBtn">保存</el-button>
 </div>
 </template>
 
@@ -21,9 +22,7 @@
 import {
   isEmptyObject
 } from '@/util/index.js';
-import {
-  tagsData as tags
-} from './config/index.js';
+import tags from './config/index.js';
 import IntelHoldStrategy from './IntelHoldStrategy.vue';
 import IntelHoldTags from './IntelHoldTags.vue';
 export default {
@@ -34,30 +33,20 @@ export default {
   },
   data() {
     return {
-      tagProps: {
-        label: 'label',
-        children: 'children'
-      },
-      // 相当于一次深度复制
-      tags: JSON.parse(JSON.stringify(tags)),
-      selectedTag: null, // 当前选中的标签
-      logoStyle: {
-        display: 'none'
-      }
+      selectedTag: null // 当前选中的标签
     }
   },
-  watch: {
-    selectedTag(newVal) {
-      if (!newVal) {
-        this.logoStyle = {
-          display: 'none'
-        };
-      } else {
-        this.logoStyle = {
-          display: ''
-        };
-      }
+  computed: {
+    logoStyle() {
+      let displayValue = this.selectedTag ? '' : 'none';
+      return {
+        display: displayValue
+      };
     }
+  },
+  mounted() {
+    document.body.addEventListener('mousemove', this.handleMouseMove);
+    // document.body.addEventListener('mousedown', this.handleMouseDown);
   },
   methods: {
     // 这里有待改进的地方，如果层级是3层
@@ -72,6 +61,7 @@ export default {
     //   });
     // },
     handleMouseMove(event) {
+      // 可以考虑使用延时函数来提高性能
       if (this.selectedTag) {
         this.$refs.logoImg.style.left = (event.pageX - 220 - 70) + 'px';
         this.$refs.logoImg.style.top = (event.pageY - 80) + 'px';
@@ -87,17 +77,13 @@ export default {
         this.selectedTag = null;
       }
     },
-    handleNodeClick(data, node, tree) {
-      if (node.isLeaf) {
-        // 封装之后的node对象，而非原始的dom对象，如何修改样式类？
-        // this.resetTags();
-        if (this.selectedTag) {
-          this.selectedTag.selected = false;
-        }
-        data.selected = true;
-        this.selectedTag = data;
-        console.log(this.selectedTag);
-      }
+    selectTag(item) {
+      this.selectedTag = item;
+    },
+    cancelSelectedTag() {
+      this.selectedTag = null;
+      // 需要操作标签导航，取消其选中样式
+      this.$refs.tagNav.reset();
     }
   }
 }
@@ -105,40 +91,28 @@ export default {
 
 <style lang="scss">
 .intel-model {
-    overflow: hidden;
+    .condition-wrapper {
+        margin: 30px 0 0 100px;
+    }
     .movelogo {
         position: absolute;
-        width: 60px;
+        min-width: 60px;
         height: 25px;
         top: 0;
         left: 0;
         z-index: 10;
     }
     .tags-wrapper {
-        width: 20%;
-        float: left;
-        text-align: center;
-        .custom-tree-node {
-            position: relative;
-            font-size: 18px;
-            height: 45px;
-            line-height: 45px;
-        }
-        .custom-tree-node.selected:before {
-            content: '';
-            position: absolute;
-            top: 12px;
-            left: -40px;
-            width: 30px;
-            height: 13px;
-            background-image: url("./logo.png");
-            background-size: 100% 100%;
-        }
+        position: fixed;
+        right: 20px;
+        top: 50%;
+        min-width: 200px;
+        transform: translateY(-50%);
     }
-    .condition-wrapper {
-        width: 70%;
-        float: left;
+    .saveBtn {
+        position: fixed;
+        right: 300px;
+        bottom: 100px;
     }
-
 }
 </style>

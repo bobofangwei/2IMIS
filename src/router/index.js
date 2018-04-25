@@ -16,7 +16,7 @@ const passwordReset = (resolve) => require(['../components/pages/passwordReset/p
 const messageTemplate = (resolve) => require(['../components/pages/messageTemplate/messageTemplate.vue'], resolve);
 const messageEdit = (resolve) => require(['../components/pages/messageEdit/messageEdit.vue'], resolve);
 const messageDetail = (resolve) => require(['../components/pages/messageDetail/messageDetail.vue'], resolve);
-const IntelHold = (resolve) => require(['../components/pages/IntelHold/IntelHold2.vue'], resolve);
+const IntelHold = (resolve) => require(['../components/pages/IntelHold/IntelHold.vue'], resolve);
 Vue.use(Router)
 
 export const constantRouterMap = [{
