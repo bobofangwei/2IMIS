@@ -15,12 +15,12 @@
           <el-form :model="phoneConditions" label-width="100px" class="phone-form" ref="phoneForm">
               <el-form-item label="产品系列:" prop="category">
                 <el-select v-model="phoneConditions.category" placeholder="请选择产品系列">
-                  <el-option v-for="cate in products" :label="cate.categoryName" :value="cate.categoryId"></el-option>
+                  <el-option v-for="cate in products" :label="cate.categoryName" :value="cate.categoryId" :key="cate.categoryId"></el-option>
                 </el-select>
                 </el-form-item>
                   <el-form-item label="具体产品:" prop="product">
                 <el-select v-model="phoneConditions.product" placeholder="请选择具体产品" multiple>
-                  <el-option v-for="pro in curProducts" :label="pro.productName" :value="pro.productId"></el-option>
+                  <el-option v-for="pro in curProducts" :label="pro.productName" :value="pro.productId" :key="pro.productId"></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="号码类型:" prop="phoneType">
@@ -52,12 +52,12 @@
         <el-form :model="messageConditions" label-width="100px" class="message-form"  ref="messageForm">
           <el-form-item label="全量发送:" prop="allDate">
             <el-select   v-model="messageConditions.allDate" multiple>
-              <el-option v-for="i in dates" :label="'每月'+i+'号'" :value="i"></el-option>
+              <el-option v-for="i in dates" :label="'每月'+i+'号'" :value="i" :key="i"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="增量发送:" prop="incrementDate">
             <el-select   v-model="messageConditions.incrementDate" multiple>
-              <el-option v-for="i in dates" :label="'每月'+i+'号'" :value="i"></el-option>
+              <el-option v-for="i in dates" :label="'每月'+i+'号'" :value="i" :key="i"></el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="短信内容:" prop="message">

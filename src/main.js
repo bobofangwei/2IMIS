@@ -43,6 +43,7 @@ router.beforeEach((to, from, next) => {
     // debugger
     console.log('getToken', to.path);
     // debugger
+    // debugger
     if (to.path === '/login') {
       // 调用 next('/')或者next({path: ''}),跳转到一个不同的地址，当前的导航被终止，然后进行一个新的导航
       next({

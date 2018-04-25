@@ -92,5 +92,11 @@ export default {
     .el-button {
         margin-top: 20px;
     }
+    .CodeMirror-fullscreen {
+        .CodeMirror-scroll {
+            height: auto;
+            min-height: 300px;
+        }
+    }
 }
 </style>

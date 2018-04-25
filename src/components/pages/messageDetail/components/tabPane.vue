@@ -1,7 +1,7 @@
 <template lang="html">
   <div class="tabpane-wrapper">
     <template v-if="tableList">
-    <table-pane v-for="item in tableList" :tableData="item.data" :rule="item.rule" :loading="tableLoading"></table-pane>
+    <table-pane v-for="(item,index) in tableList" :tableData="item.data" :rule="item.rule" :loading="tableLoading" :key="index"></table-pane>
   </template>
     <div v-else>此产品无此类短信模版！</div>
   </div>
@@ -43,6 +43,7 @@ export default {
       return getMessageDetail(this.product, this.type).then((res) => {
         this.tableList = res;
         this.tableLoading = false;
+        console.log('tableList', this.tableList);
       }).catch((error) => {
         this.tableLoading = false;
         this.$alert(error, '提示', {

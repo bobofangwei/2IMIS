@@ -3,36 +3,35 @@
   <p class="time"><span class="label"><i class="icon-back-r iconfont"></i>短信发送规则：</span>{{rule}}
   <!--  <el-button type="primary" icon="el-icon-document" class="download-btn" @click="handleDownload">导出excel</el-button>-->
   </p>
-
-  <el-table :data="tableData" :span-method="spanMethod" v-loading.body="tableLoading" class="content-table" border>
+  <el-table :data="tableData" v-loading.body="tableLoading" class="content-table" border :span-method="spanMethod">
     <el-table-column label="说明" width="100px" align="center">
-      <template scope="props">
+      <template slot-scope="props">
         {{props.row.intro}}
       </template>
     </el-table-column>
     <el-table-column  label="号码状态" width="160px" align="center">
-      <template scope="props">
+      <template slot-scope="props">
         <span>{{props.row.state}}</span>
       </template>
     </el-table-column>
     <el-table-column label="号码类型" width="120px" align="center">
-      <template scope="props">
+      <template slot-scope="props">
         {{props.row.type}}
       </template>
     </el-table-column>
     <el-table-column label="产品ID&产品名称" width="195px" align="center">
-      <template scope="props">
+      <template slot-scope="props">
         <p v-for="obj in props.row.product">{{obj.id+' '+obj.name}}</p>
       </template>
     </el-table-column>
-     <el-table-column scope="props" label="短信内容" align="left">
-       <template scope="props">
+     <el-table-column label="短信内容" align="left">
+       <template slot-scope="props">
        <span v-show="!props.row.edit">{{props.row.message}}</span>
        <el-input type="textarea" :autosize="{minRows:3}" v-show="!!props.row.edit" v-model="props.row.message"></el-input>
      </template>
    </el-table-column>
    <el-table-column label="操作" align="center" width="120px">
-     <template scope="scope">
+     <template slot-scope="scope">
     <el-button v-show='!scope.row.edit' type="primary" @click='scope.row.edit=true' size="small" icon="el-icon-edit">编辑</el-button>
     <el-button v-show='scope.row.edit' type="success" @click='completeEdit(scope)' size="small" icon="el-icon-check">完成</el-button>
   </template>
@@ -52,7 +51,9 @@ export default {
   props: {
     tableData: {
       type: Array,
-      default: []
+      default: function() {
+        return [];
+      }
     },
     rule: {
       type: String,
@@ -64,6 +65,7 @@ export default {
     }
   },
   created() {
+    console.log('this.tableData', this.tableData);
     if (this.tableData) {
       this.mergeIndex = this.findMergeTableIndex(this.tableData, {
         'intro': 0,
@@ -144,14 +146,6 @@ export default {
       console.log('待合并的列' + this.rule, ret);
       return ret;
     },
-    watch: {
-      tableData(newVal) {
-        this.mergeIndex = this.findMergeTableIndex(newVal, {
-          'intro': 0,
-          'state': 1
-        });
-      }
-    },
     spanMethod({
       row,
       column,
@@ -172,6 +166,14 @@ export default {
           return [0, 0];
         }
       }
+    }
+  },
+  watch: {
+    tableData(newVal) {
+      this.mergeIndex = this.findMergeTableIndex(newVal, {
+        'intro': 0,
+        'state': 1
+      });
     }
   }
 }

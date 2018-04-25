@@ -16,6 +16,7 @@ const passwordReset = (resolve) => require(['../components/pages/passwordReset/p
 const messageTemplate = (resolve) => require(['../components/pages/messageTemplate/messageTemplate.vue'], resolve);
 const messageEdit = (resolve) => require(['../components/pages/messageEdit/messageEdit.vue'], resolve);
 const messageDetail = (resolve) => require(['../components/pages/messageDetail/messageDetail.vue'], resolve);
+const IntelHold = (resolve) => require(['../components/pages/IntelHold/IntelHold2.vue'], resolve);
 Vue.use(Router)
 
 export const constantRouterMap = [{
@@ -151,7 +152,7 @@ export const asyncRouterMap = [{
     component: messageEdit,
     name: 'messageEdit',
     meta: {
-      title: '新建模型'
+      title: '快速建模'
     }
   }]
 }, {
@@ -164,6 +165,14 @@ export const asyncRouterMap = [{
     dropdown: false
   },
   children: [{
+    path: 'intelHold',
+    component: IntelHold,
+    name: 'IntelHold',
+    meta: {
+      title: '智慧维系',
+      icon: 'icon-bank-card'
+    }
+  }, {
     path: 'userManage',
     component: userManage,
     name: 'userManage',
