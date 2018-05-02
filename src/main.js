@@ -64,16 +64,16 @@ router.beforeEach((to, from, next) => {
       promises.push(promise);
     }
     // 如果产品列表长度为空，获取产品列表
-    // if (store.getters.productMap.length === 0) {
-    //   let promise = store.dispatch('productMapAsync');
-    //   promises.push(promise);
-    // }
-    // 说明省分列表长度为空，获取省分列表
-    // if (store.getters.provinceMap.length === 0) {
-    //   let promise = store.dispatch('provinceMapAsycn');
-    //   promises.push(promise);
-    // }
-    //
+    if (store.getters.productMap.length === 0) {
+      let promise = store.dispatch('productMapAsync');
+      promises.push(promise);
+    }
+    // 说明省分列表长度为空， 获取省分列表
+    if (store.getters.provinceMap.length === 0) {
+      let promise = store.dispatch('provinceMapAsycn');
+      promises.push(promise);
+    }
+
     // // 哪怕以上的判断都不成立，也就是说所有的信息：侧边栏，省分列表，产品列表都不为空，则Promises为空，promise.all立即触发
     if (promises.length) {
       Promise.all(promises).then((values) => {

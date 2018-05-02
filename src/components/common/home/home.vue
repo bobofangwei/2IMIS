@@ -52,6 +52,8 @@ export default {
         left: 220px;
         right: 0;
         padding: 20px 0;
+        overflow: hidden;
+        background-color: #FFF;
     }
 }
 </style>

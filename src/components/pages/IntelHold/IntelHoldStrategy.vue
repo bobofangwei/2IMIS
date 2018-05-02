@@ -141,6 +141,7 @@ export default {
         this.$set(data, 'children', []);
       }
       data.children.push(newRuleChild);
+      console.log('treeData', this.treeData);
     },
     removeChild(node, data) {
       const parent = node.parent;

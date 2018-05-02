@@ -17,6 +17,7 @@ const messageTemplate = (resolve) => require(['../components/pages/messageTempla
 const messageEdit = (resolve) => require(['../components/pages/messageEdit/messageEdit.vue'], resolve);
 const messageDetail = (resolve) => require(['../components/pages/messageDetail/messageDetail.vue'], resolve);
 const IntelHold = (resolve) => require(['../components/pages/IntelHold/IntelHold.vue'], resolve);
+const Test = () => import('../components/pages/Test/Test.vue');
 Vue.use(Router)
 
 export const constantRouterMap = [{
@@ -187,6 +188,14 @@ export const asyncRouterMap = [{
     name: 'personCenter',
     meta: {
       title: '个人中心',
+      icon: 'icon-user'
+    }
+  }, {
+    path: 'test',
+    component: Test,
+    name: 'Test',
+    meta: {
+      title: '测试',
       icon: 'icon-user'
     }
   }]

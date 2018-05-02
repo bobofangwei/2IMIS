@@ -11,12 +11,14 @@ const messageData = {
   weibovka,
   changtaoka
 };
+// 采用mock数据
+// 如果有对应的卡的数据，则返回，否则一律返回百度圣卡
 export default {
   getMessageDetail: config => {
     let paramObj = JSON.parse(config.body);
     var ret = {
       status: 0,
-      res: messageData[paramObj.product][paramObj.type]
+      res: messageData[paramObj.product] ? messageData['baidushengka'][paramObj.type] : [paramObj.product][paramObj.type]
     };
     return ret;
   },

@@ -14,7 +14,7 @@
   -->
   <intel-hold-tags @selectTag="selectTag" ref="tagNav"></intel-hold-tags>
   </div>
-  <el-button type="primary" class="saveBtn">保存</el-button>
+  <el-button type="primary" class="saveBtn" @click="handleSaveClick">保存</el-button>
 </div>
 </template>
 
@@ -84,6 +84,11 @@ export default {
       this.selectedTag = null;
       // 需要操作标签导航，取消其选中样式
       this.$refs.tagNav.reset();
+    },
+    handleSaveClick() {
+      this.$alert('您的任务已提交至后台，请等待处理结果', '任务已提交', {
+        confirmButtonText: '确定'
+      });
     }
   }
 }
@@ -91,6 +96,9 @@ export default {
 
 <style lang="scss">
 .intel-model {
+    .tip {
+        margin-left: 100px;
+    }
     .condition-wrapper {
         margin: 30px 0 0 100px;
     }

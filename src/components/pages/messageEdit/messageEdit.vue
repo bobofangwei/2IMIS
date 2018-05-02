@@ -13,14 +13,17 @@
       <div class="card operate1" v-show="curStep===0">
         <!--这里经过测试，使用:model能够顺利重置，但是使用v-model就不行,并且还必须在el-form-item中著名prop属性-->
           <el-form :model="phoneConditions" label-width="100px" class="phone-form" ref="phoneForm">
-              <el-form-item label="产品系列:" prop="category">
+
+            <!--  <el-form-item label="产品系列:" prop="category">
                 <el-select v-model="phoneConditions.category" placeholder="请选择产品系列">
                   <el-option v-for="cate in products" :label="cate.categoryName" :value="cate.categoryId" :key="cate.categoryId"></el-option>
                 </el-select>
-                </el-form-item>
+                </el-form-item>-->
                   <el-form-item label="具体产品:" prop="product">
                 <el-select v-model="phoneConditions.product" placeholder="请选择具体产品" multiple>
-                  <el-option v-for="pro in curProducts" :label="pro.productName" :value="pro.productId" :key="pro.productId"></el-option>
+                  <template v-for="item in productMap">
+                  <el-option v-for="(value,key) in item" :label="value" :value="key" :key="key"></el-option>
+                  </template>
                 </el-select>
               </el-form-item>
               <el-form-item label="号码类型:" prop="phoneType">
@@ -104,6 +107,9 @@
 
 <script>
 import breadbar from '@/components/common/breadbar/breadbar.vue';
+import {
+  mapGetters
+} from 'vuex';
 export default {
   created() {
     for (let i = 1; i <= 31; i++) {
@@ -162,7 +168,6 @@ export default {
           ]
         }
       ],
-
       phoneConditions: {
         category: '', // 产品类别
         product: [], // 具体产品
@@ -206,6 +211,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'productMap'
+    ]),
     curProducts() {
       if (this.phoneConditions.category) {
         return this.products.find((item) => {
