@@ -1,45 +1,27 @@
 <template lang="html">
 <div class="test">
-  <split-pane :height="200" split="vertical" :initPercent="50">
-    <slot slot="paneL">
-      <div  class="left-pane">LeftPane</div>
-    </slot>
-    <slot slot="paneR">
-      <split-pane split="horizontal">
-        <slot slot="paneL">
-          <div class="top-pane">topPane</div>
-        </slot>
-        <slot slot="paneR">
-          <div class="bottom-pane">bottomPane</div>
-        </slot>
-      </split-pane>
-    </slot>
-  </split-pane>
+  <collapse :accordion="true">
+    <collapse-pane title="bobo" name="1">
+      <div>与现实生活保持一直，遵循用户习惯的语言和概念</div>
+    </collapse-pane>
+    <collapse-pane title="leishao" name="2">
+      <div>帮助用户识别，界面简单直白，让用户快速识别而非回忆</div>
+    </collapse-pane>
+  </collapse>
 </div>
 </template>
 
 <script>
-import SplitPane from '@/components/common/SplitPane/SplitPane.vue';
+import Collapse from '@/components/common/Collapse/Collapse.vue';
+import CollapsePane from '@/components/common/Collapse/CollapsePane.vue'
 export default {
   components: {
-    SplitPane
+    Collapse,
+    CollapsePane
   }
 }
 </script>
 
 <style lang="scss">
-.test {
-    .left-pane {
-        background-color: pink;
-        height: 100%;
-    }
-    .top-pane {
-        background-color: blue;
-        height: 100%;
-    }
-    .bottom-pane {
-        background-color: yellow;
-        height: 100%;
-    }
-}
+.test {}
 </style>
